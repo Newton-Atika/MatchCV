@@ -33,8 +33,8 @@ from .models import UserSubscription, PaymentTransaction
 
 logger = logging.getLogger(__name__)
 
-PAYSTACK_SECRET_KEY = "sk_test_ab016db3ce085d99a4594a64ce72edb15ce270d8"
-PAYSTACK_PUBLIC_KEY = "pk_test_1add01d278e4485c17af0931cb678675e56eed61"
+PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY", "")
+PAYSTACK_PUBLIC_KEY = os.getenv("PAYSTACK_PUBLIC_KEY", "")
 PAYSTACK_CURRENCY="KES"
 PAYSTACK_AMOUNT=20000
 PAYSTACK_PLAN_DAYS=30
