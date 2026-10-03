@@ -679,212 +679,236 @@
             color: var(--primary);
         }
 
-        /* BOTTOM NAVIGATION */
+/* BOTTOM NAVIGATION */
 
-        .bottom-nav {
-            position: fixed;
-            left: 50%;
-            bottom: 18px;
-            transform: translateX(-50%);
-            width: min(94%, 620px);
-            z-index: 1000;
-            padding: 9px;
-            border-radius: 22px;
-            background: rgba(242,243,249,0.88);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            box-shadow:
-                -8px -8px 20px rgba(255,255,255,0.95),
-                10px 10px 25px rgba(176,181,207,0.42);
-            border: 1px solid rgba(255,255,255,0.75);
-        }
+.bottom-nav {
+    position: fixed;
+    left: 50%;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    width: calc(100% - 20px);
+    max-width: 620px;
+    z-index: 1000;
+    padding: 7px;
+    border-radius: 22px;
+    background: rgba(242,243,249,0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow:
+        -8px -8px 20px rgba(255,255,255,0.95),
+        10px 10px 25px rgba(176,181,207,0.42);
+    border: 1px solid rgba(255,255,255,0.75);
+    box-sizing: border-box;
+}
 
-        .bottom-nav-inner {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 5px;
-        }
+.bottom-nav-inner {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    width: 100%;
+}
 
-        .bottom-link {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 58px;
-            border-radius: 16px;
-            color: #858698;
-            font-size: 9px;
-            font-weight: 600;
-            transition: .2s ease;
-            text-align: center;
-        }
+.bottom-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 56px;
+    padding: 5px 2px;
+    border-radius: 16px;
+    color: #858698;
+    font-size: 9px;
+    font-weight: 600;
+    transition: .2s ease;
+    text-align: center;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
 
-        .bottom-link i {
-            font-size: 17px;
-            margin-bottom: 5px;
-        }
+.bottom-link span {
+    max-width: 100%;
+}
 
-        .bottom-link:hover {
-            color: var(--primary);
-        }
+.bottom-link i {
+    font-size: 16px;
+    margin-bottom: 5px;
+    flex-shrink: 0;
+}
 
-        .bottom-link.active {
-            color: var(--primary);
-            background: var(--surface);
-            box-shadow:
-                inset -3px -3px 7px rgba(255,255,255,0.8),
-                inset 3px 3px 7px rgba(188,192,213,0.28);
-        }
+.bottom-link:hover {
+    color: var(--primary);
+}
 
-        .scan-nav {
-            color: white !important;
-            background: var(--primary);
-            box-shadow:
-                -4px -4px 8px rgba(255,255,255,0.8),
-                5px 5px 10px rgba(174,178,205,0.4);
-        }
+.bottom-link.active {
+    color: var(--primary);
+    background: var(--surface);
+    box-shadow:
+        inset -3px -3px 7px rgba(255,255,255,0.8),
+        inset 3px 3px 7px rgba(188,192,213,0.28);
+}
 
-        .scan-nav:hover {
-            color: white !important;
-            background: var(--primary-dark);
-        }
+.scan-nav {
+    color: white !important;
+    background: var(--primary);
+    box-shadow:
+        -4px -4px 8px rgba(255,255,255,0.8),
+        5px 5px 10px rgba(174,178,205,0.4);
+}
 
-        /* RESPONSIVE */
+.scan-nav:hover {
+    color: white !important;
+    background: var(--primary-dark);
+}
 
-        @media (max-width: 768px) {
-            body {
-                padding-bottom: 105px;
-            }
+/* RESPONSIVE */
 
-            .topbar {
-                padding-top: 18px;
-            }
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 105px;
+    }
 
-            .hero {
-                padding: 48px 0 35px;
-            }
+    .topbar {
+        padding-top: 18px;
+    }
 
-            .hero h1 {
-                letter-spacing: -2px;
-                font-size: 44px;
-            }
+    .hero {
+        padding: 48px 0 35px;
+    }
 
-            .hero-description {
-                font-size: 15px;
-                padding: 0 8px;
-            }
+    .hero h1 {
+        letter-spacing: -2px;
+        font-size: 44px;
+    }
 
-            .hero-actions {
-                flex-direction: column;
-                padding: 0 15px;
-            }
+    .hero-description {
+        font-size: 15px;
+        padding: 0 8px;
+    }
 
-            .primary-btn,
-            .secondary-btn {
-                width: 100%;
-            }
+    .hero-actions {
+        flex-direction: column;
+        padding: 0 15px;
+    }
 
-            .scanner-wrapper {
-                margin-top: 38px;
-            }
+    .primary-btn,
+    .secondary-btn {
+        width: 100%;
+    }
 
-            .scanner-card {
-                padding: 20px;
-                border-radius: 23px;
-            }
+    .scanner-wrapper {
+        margin-top: 38px;
+    }
 
-            .scanner-header {
-                flex-direction: column;
-            }
+    .scanner-card {
+        padding: 20px;
+        border-radius: 23px;
+    }
 
-            .scanner-status {
-                align-self: flex-start;
-            }
+    .scanner-header {
+        flex-direction: column;
+    }
 
-            .upload-box,
-            .job-box {
-                min-height: 210px;
-                height: 210px;
-            }
+    .scanner-status {
+        align-self: flex-start;
+    }
 
-            .section {
-                padding: 70px 0;
-            }
+    .upload-box,
+    .job-box {
+        min-height: 210px;
+        height: 210px;
+    }
 
-            .benefit-card {
-                margin-top: 20px;
-            }
+    .section {
+        padding: 70px 0;
+    }
 
-            .cta {
-                padding: 65px 15px;
-            }
+    .benefit-card {
+        margin-top: 20px;
+    }
 
-            .cta-card {
-                padding: 40px 20px;
-            }
+    .cta {
+        padding: 65px 15px;
+    }
 
-            .bottom-nav {
-                bottom: 12px;
-                width: 95%;
-                padding: 7px;
-            }
+    .cta-card {
+        padding: 40px 20px;
+    }
 
-            .bottom-link {
-                min-height: 56px;
-                font-size: 9px;
-            }
+    .bottom-nav {
+        bottom: max(8px, env(safe-area-inset-bottom));
+        width: calc(100% - 16px);
+        padding: 5px;
+    }
 
-            .bottom-link i {
-                font-size: 16px;
-            }
-        }
+    .bottom-nav-inner {
+        gap: 2px;
+    }
 
-        @media (min-width: 769px) {
-            .topbar {
-                padding-top: 25px;
-            }
+    .bottom-link {
+        min-height: 54px;
+        padding: 5px 1px;
+        font-size: 8px;
+    }
 
-            .bottom-nav {
-                bottom: 25px;
-            }
+    .bottom-link i {
+        font-size: 15px;
+        margin-bottom: 4px;
+    }
+}
 
-            .bottom-link {
-                flex-direction: row;
-                gap: 8px;
-                font-size: 11px;
-            }
+@media (min-width: 769px) {
+    .topbar {
+        padding-top: 25px;
+    }
 
-            .bottom-link i {
-                margin-bottom: 0;
-                font-size: 15px;
-            }
-        }
+    .bottom-nav {
+        bottom: 25px;
+    }
 
-        @media (max-width: 380px) {
-            .bottom-link {
-                font-size: 8px;
-            }
+    .bottom-link {
+        flex-direction: row;
+        gap: 8px;
+        font-size: 11px;
+    }
 
-            .bottom-link i {
-                font-size: 15px;
-            }
+    .bottom-link i {
+        margin-bottom: 0;
+        font-size: 15px;
+    }
+}
 
-            .bottom-nav-inner {
-                gap: 2px;
-            }
-        }
+@media (max-width: 350px) {
+    .bottom-nav {
+        width: calc(100% - 12px);
+        padding: 4px;
+    }
 
-        @media (prefers-reduced-motion: reduce) {
-            html {
-                scroll-behavior: auto;
-            }
+    .bottom-nav-inner {
+        gap: 1px;
+    }
 
-            *,
-            *::before,
-            *::after {
-                transition-duration: 0.01ms !important;
-            }
-        }
+    .bottom-link {
+        font-size: 7px;
+        min-height: 50px;
+    }
+
+    .bottom-link i {
+        font-size: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+    }
+}
     </style>
 </head>
 
@@ -1016,30 +1040,6 @@
                         </div>
 
                         <div class="form-error" id="formError" role="alert"></div>
-
-                        <!-- TERMS -->
-                        <div class="form-check mt-4">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   id="terms"
-                                   name="terms"
-                                   required>
-
-                            <label class="form-check-label small" for="terms">
-                                I agree to the
-                                <a href="{% url 'terms_of_use' %}"
-                                   target="_blank"
-                                   rel="noopener">
-                                    Terms of Service
-                                </a>
-                                and
-                                <a href="{% url 'privacy_policy' %}"
-                                   target="_blank"
-                                   rel="noopener">
-                                    Privacy Policy
-                                </a>.
-                            </label>
-                        </div>
 
                         <!-- SUBMIT -->
                         <button class="scan-button"
@@ -1440,41 +1440,33 @@
                 });
             }
 
-            /* FORM VALIDATION */
-
-            if (form) {
-                form.addEventListener("submit", function (event) {
-                    clearError();
-
-                    const file = cvFile.files[0];
-                    const fileError = validateFile(file);
-                    const description = jobDescription.value.trim();
-                    const terms = document.getElementById("terms");
-
-                    if (fileError) {
-                        event.preventDefault();
-                        showError(fileError);
-                        return;
-                    }
-
-                    if (description.length < 30) {
-                        event.preventDefault();
-                        showError("Please enter a more detailed job description before scanning.");
-                        jobDescription.focus();
-                        return;
-                    }
-
-                    if (!terms.checked) {
-                        event.preventDefault();
-                        showError("Please accept the Terms of Service and Privacy Policy to continue.");
-                        terms.focus();
-                        return;
-                    }
-
-                    scanButton.disabled = true;
-                    scanButtonText.textContent = "Analyzing your CV...";
-                });
-            }
+                /* FORM VALIDATION */
+                
+                if (form) {
+                    form.addEventListener("submit", function (event) {
+                        clearError();
+                
+                        const file = cvFile.files[0];
+                        const fileError = validateFile(file);
+                        const description = jobDescription.value.trim();
+                
+                        if (fileError) {
+                            event.preventDefault();
+                            showError(fileError);
+                            return;
+                        }
+                
+                        if (description.length < 30) {
+                            event.preventDefault();
+                            showError("Please enter a more detailed job description before scanning.");
+                            jobDescription.focus();
+                            return;
+                        }
+                
+                        scanButton.disabled = true;
+                        scanButtonText.textContent = "Analyzing your CV...";
+                    });
+                }
 
             /* BOTTOM NAVIGATION */
 
