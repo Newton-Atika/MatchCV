@@ -1,0 +1,5346 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CV Analysis Result</title>
+
+
+    <!-- =====================================================
+         BOOTSTRAP
+    ====================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         INTER
+    ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           VARIABLES
+        ====================================================== */
+
+        :root {
+
+            --purple: #695cff;
+            --purple-light: #f1efff;
+
+            --green: #00a86b;
+            --green-light: #eafaf4;
+
+            --yellow: #e0a100;
+            --yellow-light: #fff8df;
+
+            --blue: #3b82f6;
+            --blue-light: #edf5ff;
+
+            --red: #e55353;
+            --red-light: #fff0f0;
+
+            --background: #f7f8fc;
+
+            --surface: #ffffff;
+
+            --text: #202124;
+
+            --muted: #747b87;
+
+            --border: #e8eaf0;
+
+            --dark-border: #dfe2e9;
+        }
+
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            background: var(--background);
+
+            color: var(--text);
+
+            font-family: "Inter", sans-serif;
+
+            padding-bottom: 95px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .page-header {
+
+            max-width: 1240px;
+
+            margin: auto;
+
+            padding: 34px 24px 18px;
+        }
+
+
+        .page-title {
+
+            margin: 0;
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .page-subtitle {
+
+            margin-top: 6px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+
+        .analysis-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-top: 13px;
+
+            padding: 7px 12px;
+
+            border-radius: 999px;
+
+            background: var(--green-light);
+
+            color: var(--green);
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ====================================================== */
+
+        .container-main {
+
+            max-width: 1240px;
+
+            margin: auto;
+
+            padding: 0 24px;
+        }
+
+
+        /* =====================================================
+           HERO SCORE
+        ====================================================== */
+
+        .hero-card {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 22px;
+
+            padding: 24px;
+
+            box-shadow:
+                0 8px 30px rgba(30, 35, 50, .05);
+
+            margin-bottom: 16px;
+        }
+
+
+        .hero-layout {
+
+            display: grid;
+
+            grid-template-columns: 235px 1fr;
+
+            gap: 28px;
+
+            align-items: center;
+        }
+
+
+        .score-area {
+
+            text-align: center;
+
+            padding-right: 28px;
+
+            border-right: 1px solid var(--border);
+        }
+
+
+        .score-circle {
+
+            width: 145px;
+
+            height: 145px;
+
+            margin: 0 auto 13px;
+
+            border-radius: 50%;
+
+            background:
+                conic-gradient(
+                    var(--purple) calc(var(--score) * 1%),
+                    #ececf3 0
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            position: relative;
+        }
+
+
+        .score-circle::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 112px;
+
+            height: 112px;
+
+            border-radius: 50%;
+
+            background: white;
+        }
+
+
+        .score-number {
+
+            position: relative;
+
+            z-index: 2;
+
+            font-size: 35px;
+
+            font-weight: 800;
+        }
+
+
+        .score-percent {
+
+            font-size: 13px;
+
+            color: var(--muted);
+        }
+
+
+        .score-label {
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color: var(--purple);
+        }
+
+
+        /* =====================================================
+           BREAKDOWN
+        ====================================================== */
+
+        .breakdown-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .breakdown-box {
+
+            border: 1px solid var(--border);
+
+            border-radius: 14px;
+
+            padding: 15px;
+
+            background: #fcfcfe;
+        }
+
+
+        .breakdown-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 8px;
+        }
+
+
+        .breakdown-name {
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .breakdown-value {
+
+            font-size: 16px;
+
+            font-weight: 800;
+        }
+
+
+        .breakdown-bar {
+
+            height: 6px;
+
+            background: #eceef4;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+
+        .breakdown-fill {
+
+            height: 100%;
+
+            border-radius: 20px;
+        }
+
+
+        .hard-fill {
+            background: var(--green);
+        }
+
+
+        .soft-fill {
+            background: var(--yellow);
+        }
+
+
+        .other-fill {
+            background: var(--blue);
+        }
+
+
+        /* =====================================================
+           QUICK STATS
+        ====================================================== */
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 16px;
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 15px;
+
+            padding: 14px 17px;
+        }
+
+
+        .stat-label {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: .45px;
+        }
+
+
+        .stat-value {
+
+            margin-top: 4px;
+
+            font-size: 21px;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           MISSING KEYWORDS
+        ====================================================== */
+
+        .missing-card {
+
+            background: white;
+
+            border: 1px solid #f0dede;
+
+            border-radius: 18px;
+
+            margin-bottom: 16px;
+
+            overflow: hidden;
+        }
+
+
+        .missing-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 15px 18px;
+
+            background: #fffafa;
+
+            border-bottom: 1px solid #f3e3e3;
+        }
+
+
+        .missing-title-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .missing-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: var(--red-light);
+
+            color: var(--red);
+        }
+
+
+        .missing-title {
+
+            margin: 0;
+
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+
+        .missing-description {
+
+            margin-top: 2px;
+
+            font-size: 11px;
+
+            color: var(--muted);
+        }
+
+
+        .copy-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            border: 0;
+
+            background: var(--red-light);
+
+            color: var(--red);
+
+            border-radius: 9px;
+
+            padding: 8px 11px;
+
+            font-family: inherit;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .15s ease;
+        }
+
+
+        .copy-button:hover {
+
+            transform: translateY(-1px);
+
+            background: #ffe5e5;
+        }
+
+
+        .missing-body {
+
+            padding: 15px 18px;
+        }
+
+
+        .missing-chips {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 7px;
+        }
+
+
+        .missing-chip {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding: 6px 9px;
+
+            border-radius: 7px;
+
+            background: var(--red-light);
+
+            color: #c94b4b;
+
+            border: 1px solid #ffdada;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+
+        .missing-empty {
+
+            color: var(--green);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           RESCAN CARD
+        ====================================================== */
+
+        .rescan-card {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            margin-bottom: 18px;
+
+            overflow: hidden;
+        }
+
+
+        .rescan-header {
+
+            padding: 17px 19px 14px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+
+        .rescan-title {
+
+            margin: 0;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+
+        .rescan-description {
+
+            margin-top: 3px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        .rescan-body {
+
+            padding: 17px 19px 19px;
+        }
+
+
+        .rescan-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 14px;
+        }
+
+
+        .rescan-field {
+
+            min-width: 0;
+        }
+
+
+        .rescan-field.full-width {
+
+            grid-column: 1 / -1;
+        }
+
+
+        .rescan-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #555b65;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: .35px;
+        }
+
+
+        .rescan-file {
+
+            width: 100%;
+
+            padding: 10px;
+
+            border: 1px dashed #cfd3dc;
+
+            border-radius: 10px;
+
+            background: #fafbfe;
+
+            color: #606673;
+
+            font-family: inherit;
+
+            font-size: 11px;
+        }
+
+
+        .rescan-textarea {
+
+            width: 100%;
+
+            min-height: 190px;
+
+            resize: vertical;
+
+            padding: 11px 12px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 10px;
+
+            background: #fff;
+
+            color: var(--text);
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+            outline: none;
+
+            transition:
+                border-color .15s ease,
+                box-shadow .15s ease;
+        }
+
+
+        .rescan-textarea:focus {
+
+            border-color: var(--purple);
+
+            box-shadow:
+                0 0 0 3px var(--purple-light);
+        }
+
+
+        .rescan-hint {
+
+            margin-top: 5px;
+
+            color: #979ca6;
+
+            font-size: 9px;
+
+            line-height: 1.45;
+        }
+
+
+        .rescan-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 15px;
+        }
+
+
+        .rescan-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            padding: 10px 15px;
+
+            background: var(--purple);
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .rescan-button:hover {
+
+            background: #584de8;
+        }
+
+
+        .rescan-button:disabled {
+
+            opacity: .65;
+
+            cursor: not-allowed;
+        }
+
+
+        /* =====================================================
+           ANALYSIS LAYOUT
+        ====================================================== */
+
+        .analysis-layout {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                400px;
+
+            gap: 16px;
+
+            align-items: start;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =====================================================
+           REQUIREMENTS CARD
+        ====================================================== */
+
+        .requirements-card {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+
+        .requirements-header {
+
+            padding: 17px 19px 14px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+
+        .requirements-header-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+
+        .requirements-title-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .requirements-icon {
+
+            width: 35px;
+
+            height: 35px;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: var(--purple-light);
+
+            color: var(--purple);
+        }
+
+
+        .requirements-title {
+
+            margin: 0;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+
+        .requirements-description {
+
+            margin-top: 2px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        .requirements-count {
+
+            padding: 6px 10px;
+
+            background: #f3f4f8;
+
+            color: #606673;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           FILTERS
+        ====================================================== */
+
+        .filter-groups {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 14px;
+
+            margin-top: 14px;
+        }
+
+
+        .filter-group {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 5px;
+
+            align-items: center;
+        }
+
+
+        .filter-group-label {
+
+            margin-right: 2px;
+
+            color: #969ba5;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: .4px;
+        }
+
+
+        .filter-button {
+
+            border: 1px solid var(--border);
+
+            background: white;
+
+            color: #666c77;
+
+            border-radius: 8px;
+
+            padding: 6px 9px;
+
+            font-family: inherit;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .15s ease;
+        }
+
+
+        .filter-button:hover {
+
+            background: #f8f8fb;
+        }
+
+
+        .filter-button.active {
+
+            background: var(--purple);
+
+            color: white;
+
+            border-color: var(--purple);
+        }
+
+
+        .status-filter.active.covered-filter {
+
+            background: var(--green);
+
+            border-color: var(--green);
+        }
+
+
+        .status-filter.active.review-filter {
+
+            background: var(--yellow);
+
+            border-color: var(--yellow);
+
+            color: white;
+        }
+
+
+        .status-filter.active.missing-filter {
+
+            background: var(--red);
+
+            border-color: var(--red);
+        }
+
+
+        .category-filter.active.hard-filter {
+
+            background: var(--green);
+
+            border-color: var(--green);
+        }
+
+
+        .category-filter.active.soft-filter {
+
+            background: var(--yellow);
+
+            border-color: var(--yellow);
+        }
+
+
+        .category-filter.active.other-filter {
+
+            background: var(--blue);
+
+            border-color: var(--blue);
+        }
+
+
+        .active-filter-message {
+
+            display: none;
+
+            margin-top: 10px;
+
+            padding: 7px 9px;
+
+            background: #fafbfe;
+
+            border-radius: 7px;
+
+            color: #737985;
+
+            font-size: 9px;
+        }
+
+
+        .active-filter-message.show {
+
+            display: block;
+        }
+
+
+        /* =====================================================
+           EXPLANATION
+        ====================================================== */
+
+        .analysis-explanation {
+
+            padding: 10px 19px;
+
+            background: #fafbfe;
+
+            border-bottom: 1px solid var(--border);
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+
+        .analysis-explanation strong {
+
+            color: #555b65;
+        }
+
+
+        /* =====================================================
+           TABLE HEADER
+        ====================================================== */
+
+        .requirement-columns {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(170px, 1.7fr)
+                65px
+                65px
+                80px
+                100px;
+
+            padding: 8px 14px 8px 20px;
+
+            background: #fafbfc;
+
+            border-bottom: 1px solid var(--border);
+
+            color: #9499a4;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: .35px;
+        }
+
+
+        .column-right {
+
+            text-align: right;
+        }
+
+
+        /* =====================================================
+           REQUIREMENT ROW
+        ====================================================== */
+
+        .requirement-row {
+
+            display: grid;
+
+            grid-template-columns:
+                5px
+                minmax(170px, 1.7fr)
+                65px
+                65px
+                80px
+                100px;
+
+            align-items: center;
+
+            min-height: 59px;
+
+            border-bottom: 1px solid #f0f1f5;
+
+            transition: background .12s ease;
+        }
+
+
+        .requirement-row:last-child {
+
+            border-bottom: 0;
+        }
+
+
+        .requirement-row:hover {
+
+            background: #fafbfe;
+        }
+
+
+        .requirement-row.hidden {
+
+            display: none;
+        }
+
+
+        .requirement-color {
+
+            width: 5px;
+
+            height: 31px;
+
+            border-radius:
+                0
+                5px
+                5px
+                0;
+        }
+
+
+        .color-hard {
+
+            background: var(--green);
+        }
+
+
+        .color-soft {
+
+            background: var(--yellow);
+        }
+
+
+        .color-other {
+
+            background: var(--blue);
+        }
+
+
+        .requirement-main {
+
+            min-width: 0;
+
+            padding: 8px 12px;
+        }
+
+
+        .requirement-name {
+
+            color: #292d34;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            line-height: 1.25;
+        }
+
+
+        .requirement-category {
+
+            display: inline-block;
+
+            margin-top: 3px;
+
+            font-size: 8px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: .35px;
+        }
+
+
+        .category-hard {
+
+            color: var(--green);
+        }
+
+
+        .category-soft {
+
+            color: #b27d00;
+        }
+
+
+        .category-other {
+
+            color: var(--blue);
+        }
+
+
+        /* =====================================================
+           FREQUENCY
+        ====================================================== */
+
+        .frequency-cell {
+
+            text-align: center;
+
+            padding: 7px 3px;
+        }
+
+
+        .frequency-number {
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            color: #343942;
+        }
+
+
+        .frequency-label {
+
+            margin-top: 2px;
+
+            font-size: 7px;
+
+            color: #9a9faa;
+        }
+
+
+        /* =====================================================
+           COVERAGE
+        ====================================================== */
+
+        .coverage-cell {
+
+            padding: 7px 9px;
+        }
+
+
+        .coverage-number {
+
+            text-align: right;
+
+            margin-bottom: 4px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+
+        .coverage-track {
+
+            height: 5px;
+
+            background: #eceef3;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+
+        .coverage-fill {
+
+            height: 100%;
+
+            border-radius: 20px;
+        }
+
+
+        .fill-hard {
+
+            background: var(--green);
+        }
+
+
+        .fill-soft {
+
+            background: var(--yellow);
+        }
+
+
+        .fill-other {
+
+            background: var(--blue);
+        }
+
+
+        /* =====================================================
+           STATUS
+        ====================================================== */
+
+        .status-cell {
+
+            padding:
+                7px
+                12px
+                7px
+                4px;
+
+            text-align: right;
+        }
+
+
+        .status-pill {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 4px;
+
+            padding: 5px 8px;
+
+            border-radius: 999px;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+
+        .status-covered {
+
+            background: var(--green-light);
+
+            color: var(--green);
+        }
+
+
+        .status-review {
+
+            background: var(--yellow-light);
+
+            color: #a87500;
+        }
+
+
+        .status-missing {
+
+            background: var(--red-light);
+
+            color: var(--red);
+        }
+
+
+        /* =====================================================
+           NO RESULTS
+        ====================================================== */
+
+        .no-results {
+
+            display: none;
+
+            padding: 35px 20px;
+
+            text-align: center;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+
+        .no-results.show {
+
+            display: block;
+        }
+
+
+        .no-results i {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 20px;
+        }
+
+
+        /* =====================================================
+           RIGHT REFERENCE PANEL
+        ====================================================== */
+
+        .reference-card {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            position: sticky;
+
+            top: 18px;
+        }
+
+
+        .reference-header {
+
+            padding: 16px 17px 12px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+
+        .reference-title-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .reference-icon {
+
+            width: 35px;
+
+            height: 35px;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: var(--purple-light);
+
+            color: var(--purple);
+        }
+
+
+        .reference-title {
+
+            margin: 0;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+
+        .reference-description {
+
+            margin-top: 2px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           REFERENCE TABS
+        ====================================================== */
+
+        .reference-tabs {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 5px;
+
+            padding: 9px 10px;
+
+            background: #fafbfe;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+
+        .reference-tab {
+
+            border: 1px solid var(--border);
+
+            background: white;
+
+            color: #777d88;
+
+            border-radius: 8px;
+
+            padding: 7px 8px;
+
+            font-family: inherit;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .reference-tab.active {
+
+            background: var(--purple);
+
+            border-color: var(--purple);
+
+            color: white;
+        }
+
+
+        /* =====================================================
+           LEGEND
+        ====================================================== */
+
+        .jd-legend {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            padding: 10px 14px;
+
+            background: #fff;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+
+        .legend-item {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            color: #606671;
+        }
+
+
+        .legend-dot {
+
+            width: 9px;
+
+            height: 9px;
+
+            border-radius: 3px;
+        }
+
+
+        .legend-hard {
+
+            background: var(--green);
+        }
+
+
+        .legend-soft {
+
+            background: var(--yellow);
+        }
+
+
+        .legend-other {
+
+            background: var(--blue);
+        }
+
+
+        /* =====================================================
+           REFERENCE CONTENT
+        ====================================================== */
+
+        .reference-content {
+
+            display: none;
+
+            padding: 17px;
+
+            max-height: 700px;
+
+            overflow-y: auto;
+
+            color: #3d424b;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        .reference-content.active {
+
+            display: block;
+        }
+
+
+        /* =====================================================
+           JD COLOUR CODING
+        ====================================================== */
+
+        .reference-content .jd-hard {
+
+            background: #dff7ed !important;
+
+            color: #087b50 !important;
+
+            border-bottom:
+                2px solid
+                var(--green);
+
+            padding:
+                2px
+                4px;
+
+            border-radius: 4px;
+
+            font-weight: 700;
+        }
+
+
+        .reference-content .jd-soft {
+
+            background: #fff3c7 !important;
+
+            color: #9a6c00 !important;
+
+            border-bottom:
+                2px solid
+                var(--yellow);
+
+            padding:
+                2px
+                4px;
+
+            border-radius: 4px;
+
+            font-weight: 700;
+        }
+
+
+        .reference-content .jd-other {
+
+            background: #e3efff !important;
+
+            color: #2164b5 !important;
+
+            border-bottom:
+                2px solid
+                var(--blue);
+
+            padding:
+                2px
+                4px;
+
+            border-radius: 4px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           CV COLOUR CODING
+        ====================================================== */
+
+        .reference-content .cv-hard {
+
+            background: #dff7ed;
+
+            color: #087b50;
+
+            border-bottom:
+                2px solid
+                var(--green);
+
+            padding:
+                2px
+                4px;
+
+            border-radius: 4px;
+
+            font-weight: 700;
+        }
+
+
+        .reference-content .cv-soft {
+
+            background: #fff3c7;
+
+            color: #9a6c00;
+
+            border-bottom:
+                2px solid
+                var(--yellow);
+
+            padding:
+                2px
+                4px;
+
+            border-radius: 4px;
+
+            font-weight: 700;
+        }
+
+
+        .reference-content .cv-other {
+
+            background: #e3efff;
+
+            color: #2164b5;
+
+            border-bottom:
+                2px solid
+                var(--blue);
+
+            padding:
+                2px
+                4px;
+
+            border-radius: 4px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           CV NOTE
+        ====================================================== */
+
+        .cv-note {
+
+            padding: 9px 12px;
+
+            margin-bottom: 13px;
+
+            border-radius: 9px;
+
+            background: #fafbfe;
+
+            color: var(--muted);
+
+            font-size: 9px;
+
+            line-height: 1.5;
+        }
+
+
+        .cv-note strong {
+
+            color: #555b65;
+        }
+
+
+        /* =====================================================
+           REFERENCE SCROLLBAR
+        ====================================================== */
+
+        .reference-content::-webkit-scrollbar {
+
+            width: 6px;
+        }
+
+
+        .reference-content::-webkit-scrollbar-track {
+
+            background: #f4f5f8;
+        }
+
+
+        .reference-content::-webkit-scrollbar-thumb {
+
+            background: #d2d5dd;
+
+            border-radius: 10px;
+        }
+
+
+        /* =====================================================
+           BOTTOM NAV
+        ====================================================== */
+
+        .bottom-nav {
+
+            position: fixed;
+
+            left: 50%;
+
+            bottom: 14px;
+
+            transform: translateX(-50%);
+
+            width:
+                min(
+                    680px,
+                    calc(100% - 28px)
+                );
+
+            padding: 8px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .96
+                );
+
+            backdrop-filter:
+                blur(16px);
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 20px;
+
+            box-shadow:
+                0
+                10px
+                35px
+                rgba(
+                    30,
+                    35,
+                    50,
+                    .12
+                );
+
+            z-index: 1000;
+        }
+
+
+        .bottom-link {
+
+            text-decoration: none;
+
+            color: #858a95;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 4px;
+
+            padding: 7px 4px;
+
+            border-radius: 13px;
+
+            font-size: 9px;
+
+            font-weight: 600;
+        }
+
+
+        .bottom-link i {
+
+            font-size: 15px;
+        }
+
+
+        .bottom-link.active {
+
+            color: var(--purple);
+
+            background: var(--purple-light);
+        }
+
+
+        /* =====================================================
+           TOAST
+        ====================================================== */
+
+        .copy-toast {
+
+            position: fixed;
+
+            left: 50%;
+
+            bottom: 85px;
+
+            transform:
+                translateX(-50%)
+                translateY(15px);
+
+            background: #202124;
+
+            color: white;
+
+            padding: 9px 13px;
+
+            border-radius: 9px;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition: .2s ease;
+
+            z-index: 2000;
+        }
+
+
+        .copy-toast.show {
+
+            opacity: 1;
+
+            transform:
+                translateX(-50%)
+                translateY(0);
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 1050px) {
+
+            .analysis-layout {
+
+                grid-template-columns:
+                    minmax(0, 1fr)
+                    350px;
+            }
+
+
+            .requirement-columns {
+
+                grid-template-columns:
+                    minmax(145px, 1.5fr)
+                    60px
+                    60px
+                    70px
+                    90px;
+            }
+
+
+            .requirement-row {
+
+                grid-template-columns:
+                    5px
+                    minmax(145px, 1.5fr)
+                    60px
+                    60px
+                    70px
+                    90px;
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 820px) {
+
+            .analysis-layout {
+
+                display: flex;
+
+                flex-direction: column;
+            }
+
+
+            .requirements-card {
+
+                width: 100%;
+            }
+
+
+            .reference-card {
+
+                width: 100%;
+
+                position: static;
+            }
+
+
+            .reference-content {
+
+                max-height: none;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            body {
+
+                padding-bottom: 90px;
+            }
+
+
+            .page-header {
+
+                padding:
+                    25px
+                    15px
+                    14px;
+            }
+
+
+            .container-main {
+
+                padding:
+                    0
+                    15px;
+            }
+
+
+            .page-title {
+
+                font-size: 23px;
+            }
+
+
+            .hero-card {
+
+                padding: 18px;
+
+                border-radius: 18px;
+            }
+
+
+            .hero-layout {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .score-area {
+
+                padding-right: 0;
+
+                padding-bottom: 20px;
+
+                border-right: 0;
+
+                border-bottom:
+                    1px solid
+                    var(--border);
+            }
+
+
+            .breakdown-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .stats-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                gap: 8px;
+            }
+
+
+            .stat-card {
+
+                padding: 13px;
+            }
+
+
+            .stat-value {
+
+                font-size: 19px;
+            }
+
+
+            .missing-header {
+
+                align-items: flex-start;
+
+                gap: 10px;
+            }
+
+
+            .copy-button span {
+
+                display: none;
+            }
+
+
+            .requirements-header {
+
+                padding: 15px;
+            }
+
+
+            .filter-groups {
+
+                display: block;
+            }
+
+
+            .filter-group {
+
+                margin-bottom: 8px;
+            }
+
+
+            .requirement-columns {
+
+                display: none;
+            }
+
+
+            /* =================================================
+               MOBILE REQUIREMENT ROW
+            ================================================== */
+
+            .requirement-row {
+
+                grid-template-columns:
+                    4px
+                    minmax(0, 1fr)
+                    52px
+                    52px;
+
+                min-height: 96px;
+            }
+
+
+            .requirement-color {
+
+                width: 4px;
+
+                height: 70px;
+
+                grid-column: 1;
+
+                grid-row: 1 / span 2;
+            }
+
+
+            .requirement-main {
+
+                grid-column: 2;
+
+                grid-row: 1;
+
+                align-self: center;
+
+                padding:
+                    9px
+                    9px
+                    2px;
+            }
+
+
+            .requirement-name {
+
+                font-size: 13px;
+
+                line-height: 1.35;
+            }
+
+
+            .frequency-cell {
+
+                padding:
+                    6px
+                    3px;
+            }
+
+
+            /*
+                Because .frequency-cell elements are all DIVs,
+                nth-of-type cannot reliably identify them after
+                the other DIV elements in the row.
+
+                We therefore use their direct position through
+                the row's child structure below.
+            */
+
+            .requirement-row
+            > .frequency-cell:nth-child(3) {
+
+                grid-column: 3;
+
+                grid-row: 1;
+            }
+
+
+            .requirement-row
+            > .frequency-cell:nth-child(4) {
+
+                grid-column: 4;
+
+                grid-row: 1;
+            }
+
+
+            .frequency-number {
+
+                font-size: 14px;
+            }
+
+
+            .frequency-label {
+
+                margin-top: 2px;
+
+                font-size: 8px;
+            }
+
+
+            .coverage-cell {
+
+                grid-column: 2;
+
+                grid-row: 2;
+
+                padding:
+                    6px
+                    9px
+                    8px;
+            }
+
+
+            .coverage-number {
+
+                font-size: 11px;
+
+                text-align: left;
+
+                margin-bottom: 4px;
+            }
+
+
+            .coverage-track {
+
+                height: 5px;
+            }
+
+
+            .status-cell {
+
+                grid-column:
+                    3 /
+                    span 2;
+
+                grid-row: 2;
+
+                text-align: left;
+
+                padding:
+                    0
+                    9px
+                    8px;
+            }
+
+
+            .status-pill {
+
+                font-size: 9px;
+
+                padding:
+                    5px
+                    8px;
+            }
+
+
+            /* =================================================
+               RESCAN
+            ================================================== */
+
+            .rescan-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .rescan-field.full-width {
+
+                grid-column: auto;
+            }
+
+
+            .rescan-body {
+
+                padding: 15px;
+            }
+
+
+            .rescan-textarea {
+
+                min-height: 170px;
+
+                font-size: 13px;
+            }
+
+
+            .rescan-button {
+
+                width: 100%;
+
+                min-height: 44px;
+
+                font-size: 12px;
+            }
+
+
+            .reference-tabs {
+
+                padding:
+                    8px;
+            }
+
+
+            .reference-content {
+
+                padding:
+                    15px;
+
+                font-size: 12px;
+            }
+
+
+            .bottom-nav {
+
+                bottom: 8px;
+
+                width:
+                    calc(
+                        100%
+                        -
+                        16px
+                    );
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     PAGE HEADER
+========================================================== -->
+
+<header class="page-header">
+
+
+    <h1 class="page-title">
+
+        CV Analysis Report
+
+    </h1>
+
+
+    <div class="page-subtitle">
+
+        Detailed comparison between your CV and the job description.
+
+    </div>
+
+
+    {% if scan.status == "completed" %}
+
+        <div class="analysis-badge">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            Analysis completed
+
+        </div>
+
+    {% elif scan.status == "failed" %}
+
+        <div
+            class="analysis-badge"
+            style="
+                background:var(--red-light);
+                color:var(--red);
+            "
+        >
+
+            <i class="fa-solid fa-circle-xmark"></i>
+
+            Analysis failed
+
+        </div>
+
+    {% else %}
+
+        <div
+            class="analysis-badge"
+            style="
+                background:var(--yellow-light);
+                color:var(--yellow);
+            "
+        >
+
+            <i class="fa-solid fa-spinner"></i>
+
+            Analysis processing
+
+        </div>
+
+    {% endif %}
+
+
+</header>
+
+
+
+<main class="container-main">
+
+
+<!-- =========================================================
+     HERO
+========================================================== -->
+
+<section class="hero-card">
+
+
+    <div class="hero-layout">
+
+
+        <div class="score-area">
+
+
+            <div
+                class="score-circle"
+                style="
+                    --score:
+                    {{ scan.match_score|default:0 }};
+                "
+            >
+
+                <div class="score-number">
+
+                    {{ scan.match_score|default:0 }}
+
+                    <span class="score-percent">
+                        %
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="score-label">
+
+                {{ scan.score_label }}
+
+            </div>
+
+
+        </div>
+
+
+
+        <div>
+
+
+            <div class="breakdown-grid">
+
+
+                <div class="breakdown-box">
+
+                    <div class="breakdown-top">
+
+                        <span class="breakdown-name">
+                            Hard Skills
+                        </span>
+
+                        <span class="breakdown-value">
+                            {{ scan.analysis.scores.hard|default:0 }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="breakdown-bar">
+
+                        <div
+                            class="breakdown-fill hard-fill"
+                            style="
+                                width:
+                                {{ scan.analysis.scores.hard|default:0 }}%;
+                            "
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="breakdown-box">
+
+                    <div class="breakdown-top">
+
+                        <span class="breakdown-name">
+                            Soft Skills
+                        </span>
+
+                        <span class="breakdown-value">
+                            {{ scan.analysis.scores.soft|default:0 }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="breakdown-bar">
+
+                        <div
+                            class="breakdown-fill soft-fill"
+                            style="
+                                width:
+                                {{ scan.analysis.scores.soft|default:0 }}%;
+                            "
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="breakdown-box">
+
+                    <div class="breakdown-top">
+
+                        <span class="breakdown-name">
+                            Other
+                        </span>
+
+                        <span class="breakdown-value">
+                            {{ scan.analysis.scores.other|default:0 }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="breakdown-bar">
+
+                        <div
+                            class="breakdown-fill other-fill"
+                            style="
+                                width:
+                                {{ scan.analysis.scores.other|default:0 }}%;
+                            "
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     QUICK STATS
+========================================================== -->
+
+<section class="stats-grid">
+
+
+    <div class="stat-card">
+
+        <div class="stat-label">
+            Requirements
+        </div>
+
+        <div class="stat-value">
+            {{ scan.analysis.counts.all|default:0 }}
+        </div>
+
+    </div>
+
+
+
+    <div class="stat-card">
+
+        <div class="stat-label">
+            Covered
+        </div>
+
+        <div
+            class="stat-value"
+            id="coveredCount"
+        >
+            {{ scan.analysis.counts.covered|default:0 }}
+        </div>
+
+    </div>
+
+
+
+    <div class="stat-card">
+
+        <div class="stat-label">
+            Needs Review
+        </div>
+
+        <div
+            class="stat-value"
+            id="reviewCount"
+        >
+            {{ scan.analysis.counts.needs_review|default:0 }}
+        </div>
+
+    </div>
+
+
+
+    <div class="stat-card">
+
+        <div class="stat-label">
+            Missing
+        </div>
+
+        <div
+            class="stat-value"
+            id="missingCount"
+        >
+            {{ scan.analysis.counts.missing|default:0 }}
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =========================================================
+     MISSING KEYWORDS
+========================================================== -->
+
+<section class="missing-card">
+
+    <div class="missing-header">
+
+        <div class="missing-title-area">
+
+            <div class="missing-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+
+            <div>
+                <h2 class="missing-title">
+                    Missing Keywords
+                </h2>
+
+                <div class="missing-description">
+                    Keywords found in the job description but not found in your CV.
+                </div>
+            </div>
+
+        </div>
+
+        {% if scan.analysis.missing_terms %}
+
+            <button
+                type="button"
+                class="copy-button"
+                id="copyMissingButton"
+                onclick="copyMissingKeywords()"
+            >
+                <i class="fa-regular fa-copy"></i>
+                <span>Copy all</span>
+            </button>
+
+        {% endif %}
+
+    </div>
+
+    <div class="missing-body">
+
+        {% if scan.analysis.missing_terms %}
+
+            <div
+                class="missing-chips"
+                id="missingKeywords"
+            >
+
+                {% for term in scan.analysis.missing_terms %}
+
+                    <span
+                        class="missing-chip"
+                        data-keyword="{{ term|escape }}"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                        {{ term }}
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="missing-empty">
+                <i class="fa-solid fa-circle-check"></i>
+                No missing keywords identified.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     EDIT CV / JD AND RESCAN
+========================================================== -->
+
+<section class="rescan-card">
+
+
+    <div class="rescan-header">
+
+        <h2 class="rescan-title">
+
+            Edit your CV or Job Description and scan again
+
+        </h2>
+
+
+        <div class="rescan-description">
+
+            Edit either the CV or job description below and
+            run the analysis again. Your changes will replace
+            the current analysis for this scan.
+
+        </div>
+
+    </div>
+
+
+
+    <div class="rescan-body">
+
+
+        <form
+            method="post"
+            action="{% url 'rescan_scan' scan.id %}"
+            enctype="multipart/form-data"
+            id="rescanForm"
+        >
+
+            {% csrf_token %}
+
+
+            <div class="rescan-grid">
+
+
+                <!-- =================================================
+                     OPTIONAL NEW CV FILE
+                ================================================== -->
+
+                <div class="rescan-field">
+
+                    <label
+                        class="rescan-label"
+                        for="rescanCvFile"
+                    >
+
+                        Upload another CV
+
+                    </label>
+
+
+                    <input
+                        class="rescan-file"
+                        type="file"
+                        id="rescanCvFile"
+                        name="cv_file"
+                        accept=".pdf,.docx,.txt"
+                    >
+
+
+                    <div class="rescan-hint">
+
+                        Optional. You do not need to upload another CV
+                        if you are editing the CV text below.
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     CURRENT CV TEXT
+                ================================================== -->
+
+                <div class="rescan-field">
+
+                    <label
+                        class="rescan-label"
+                        for="rescanCvText"
+                    >
+
+                        Edit your CV
+
+                    </label>
+
+
+                    <textarea
+                        class="rescan-textarea"
+                        id="rescanCvText"
+                        name="cv_text"
+                        placeholder="Edit your CV text here..."
+                    >{{ scan.cv_text }}</textarea>
+
+
+                    <div class="rescan-hint">
+
+                        Edit the existing CV directly.
+                        You do not need to upload the original file again.
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     JOB DESCRIPTION
+                ================================================== -->
+
+                <div class="rescan-field full-width">
+
+                    <label
+                        class="rescan-label"
+                        for="rescanJobDescription"
+                    >
+
+                        Job Description
+
+                    </label>
+
+
+                    <textarea
+                        class="rescan-textarea"
+                        id="rescanJobDescription"
+                        name="job_description"
+                        placeholder="Edit the job description..."
+                        required
+                    >{{ scan.job_description }}</textarea>
+
+
+                    <div class="rescan-hint">
+
+                        Edit the job description if required.
+                        Leave it unchanged if you only want to improve your CV.
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="rescan-actions">
+
+                <button
+                    type="submit"
+                    class="rescan-button"
+                    id="rescanButton"
+                >
+
+                    <i class="fa-solid fa-rotate"></i>
+
+                    Scan again
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</section>
+
+
+<!-- =========================================================
+     MAIN ANALYSIS
+========================================================== -->
+
+<section class="analysis-layout">
+
+
+
+<!-- =========================================================
+     LEFT — REQUIREMENTS
+========================================================== -->
+
+<div class="requirements-card">
+
+
+    <div class="requirements-header">
+
+
+        <div class="requirements-header-top">
+
+
+            <div class="requirements-title-area">
+
+
+                <div class="requirements-icon">
+
+                    <i class="fa-solid fa-list-check"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2 class="requirements-title">
+
+                        Requirements Analysis
+
+                    </h2>
+
+
+                    <div class="requirements-description">
+
+                        Compare every selected job requirement against your CV.
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="requirements-count">
+
+                {{ scan.analysis.counts.all|default:0 }}
+
+                requirements
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             FILTERS
+        ================================================== -->
+
+        <div class="filter-groups">
+
+
+            <!-- STATUS -->
+
+            <div class="filter-group">
+
+
+                <span class="filter-group-label">
+
+                    Status
+
+                </span>
+
+
+                <button
+                    type="button"
+                    class="
+                        filter-button
+                        status-filter
+                    "
+                    data-status-filter="all"
+                >
+
+                    All
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="
+                        filter-button
+                        status-filter
+                        covered-filter
+                    "
+                    data-status-filter="covered"
+                >
+
+                    Covered
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="
+                        filter-button
+                        status-filter
+                        review-filter
+                    "
+                    data-status-filter="review"
+                >
+
+                    Needs review
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="
+                        filter-button
+                        status-filter
+                        missing-filter
+                    "
+                    data-status-filter="missing"
+                >
+
+                    Missing
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- CATEGORY -->
+
+            <div class="filter-group">
+
+
+                <span class="filter-group-label">
+
+                    Type
+
+                </span>
+
+
+                <button
+                    type="button"
+                    class="
+                        filter-button
+                        category-filter
+                    "
+                    data-category-filter="all"
+                >
+
+                    All
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="
+                        filter-button
+                        category-filter
+                        hard-filter
+                    "
+                    data-category-filter="hard"
+                >
+
+                    Hard skills
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="
+                        filter-button
+                        category-filter
+                        soft-filter
+                    "
+                    data-category-filter="soft"
+                >
+
+                    Soft skills
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="
+                        filter-button
+                        category-filter
+                        other-filter
+                    "
+                    data-category-filter="other"
+                >
+
+                    Other
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <div
+            class="active-filter-message"
+            id="activeFilterMessage"
+        ></div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         EXPLANATION
+    ====================================================== -->
+
+    <div class="analysis-explanation">
+
+        <strong>How to read the report:</strong>
+
+        JD = number of times the requirement appears in the job description.
+
+        CV = number of times it appears in the CV.
+
+        If CV mentions are equal to or greater than JD mentions,
+        the requirement is <strong>Covered</strong>.
+
+        If it appears in the CV but fewer times than in the JD,
+        it <strong>Needs Review</strong>.
+
+        If it does not appear in the CV,
+        it is <strong>Missing</strong>.
+
+    </div>
+
+
+
+    <!-- =====================================================
+         COLUMN HEADER
+    ====================================================== -->
+
+    <div class="requirement-columns">
+
+
+        <div>
+
+            Requirement
+
+        </div>
+
+
+        <div class="column-right">
+
+            JD
+
+        </div>
+
+
+        <div class="column-right">
+
+            CV
+
+        </div>
+
+
+        <div class="column-right">
+
+            Coverage
+
+        </div>
+
+
+        <div class="column-right">
+
+            Status
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         REQUIREMENTS
+    ====================================================== -->
+
+    <div
+        class="requirement-list"
+        id="requirementList"
+    >
+
+
+        <!-- =================================================
+             HARD SKILLS
+        ================================================== -->
+
+        {% for item in scan.analysis.hard_skills %}
+
+
+            <div
+                class="requirement-row"
+                data-category="hard"
+                data-jd="{{ item.job_count|default:0 }}"
+                data-cv="{{ item.resume_count|default:0 }}"
+            >
+
+
+                <div class="requirement-color color-hard"></div>
+
+
+
+                <div class="requirement-main">
+
+                    <div class="requirement-name">
+
+                        {{ item.term }}
+
+                    </div>
+
+                    <div class="requirement-category category-hard">
+
+                        Hard skill
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="frequency-cell">
+
+                    <div class="frequency-number">
+
+                        {{ item.job_count|default:0 }}
+
+                    </div>
+
+                    <div class="frequency-label">
+
+                        JD
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="frequency-cell">
+
+                    <div class="frequency-number">
+
+                        {{ item.resume_count|default:0 }}
+
+                    </div>
+
+                    <div class="frequency-label">
+
+                        CV
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="coverage-cell">
+
+                    <div
+                        class="coverage-number"
+                        data-coverage
+                    >
+
+                        {{ item.coverage|default:0 }}%
+
+                    </div>
+
+                    <div class="coverage-track">
+
+                        <div
+                            class="coverage-fill fill-hard"
+                            data-coverage-fill
+                            style="
+                                width:
+                                {{ item.coverage|default:0 }}%;
+                            "
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="status-cell">
+
+                    <span
+                        class="status-pill"
+                        data-status-pill
+                    ></span>
+
+                </div>
+
+
+            </div>
+
+
+        {% endfor %}
+
+
+
+        <!-- =================================================
+             SOFT SKILLS
+        ================================================== -->
+
+        {% for item in scan.analysis.soft_skills %}
+
+
+            <div
+                class="requirement-row"
+                data-category="soft"
+                data-jd="{{ item.job_count|default:0 }}"
+                data-cv="{{ item.resume_count|default:0 }}"
+            >
+
+
+                <div class="requirement-color color-soft"></div>
+
+
+
+                <div class="requirement-main">
+
+                    <div class="requirement-name">
+
+                        {{ item.term }}
+
+                    </div>
+
+                    <div class="requirement-category category-soft">
+
+                        Soft skill
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="frequency-cell">
+
+                    <div class="frequency-number">
+
+                        {{ item.job_count|default:0 }}
+
+                    </div>
+
+                    <div class="frequency-label">
+
+                        JD
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="frequency-cell">
+
+                    <div class="frequency-number">
+
+                        {{ item.resume_count|default:0 }}
+
+                    </div>
+
+                    <div class="frequency-label">
+
+                        CV
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="coverage-cell">
+
+                    <div
+                        class="coverage-number"
+                        data-coverage
+                    >
+
+                        {{ item.coverage|default:0 }}%
+
+                    </div>
+
+                    <div class="coverage-track">
+
+                        <div
+                            class="coverage-fill fill-soft"
+                            data-coverage-fill
+                            style="
+                                width:
+                                {{ item.coverage|default:0 }}%;
+                            "
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="status-cell">
+
+                    <span
+                        class="status-pill"
+                        data-status-pill
+                    ></span>
+
+                </div>
+
+
+            </div>
+
+
+        {% endfor %}
+
+
+
+        <!-- =================================================
+             OTHER KEYWORDS
+        ================================================== -->
+
+        {% for item in scan.analysis.other_requirements %}
+
+
+            <div
+                class="requirement-row"
+                data-category="other"
+                data-jd="{{ item.job_count|default:0 }}"
+                data-cv="{{ item.resume_count|default:0 }}"
+            >
+
+
+                <div class="requirement-color color-other"></div>
+
+
+
+                <div class="requirement-main">
+
+                    <div class="requirement-name">
+
+                        {{ item.term }}
+
+                    </div>
+
+                    <div class="requirement-category category-other">
+
+                        Other keyword
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="frequency-cell">
+
+                    <div class="frequency-number">
+
+                        {{ item.job_count|default:0 }}
+
+                    </div>
+
+                    <div class="frequency-label">
+
+                        JD
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="frequency-cell">
+
+                    <div class="frequency-number">
+
+                        {{ item.resume_count|default:0 }}
+
+                    </div>
+
+                    <div class="frequency-label">
+
+                        CV
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="coverage-cell">
+
+                    <div
+                        class="coverage-number"
+                        data-coverage
+                    >
+
+                        {{ item.coverage|default:0 }}%
+
+                    </div>
+
+                    <div class="coverage-track">
+
+                        <div
+                            class="coverage-fill fill-other"
+                            data-coverage-fill
+                            style="
+                                width:
+                                {{ item.coverage|default:0 }}%;
+                            "
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="status-cell">
+
+                    <span
+                        class="status-pill"
+                        data-status-pill
+                    ></span>
+
+                </div>
+
+
+            </div>
+
+
+        {% endfor %}
+
+
+
+        <div
+            class="no-results"
+            id="noResults"
+        >
+
+            <i class="fa-regular fa-face-meh"></i>
+
+            No requirements match the selected filters.
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     RIGHT — REFERENCE PANEL
+========================================================== -->
+
+<aside class="reference-card">
+
+
+    <div class="reference-header">
+
+
+        <div class="reference-title-area">
+
+
+            <div class="reference-icon">
+
+                <i class="fa-solid fa-highlighter"></i>
+
+            </div>
+
+
+            <div>
+
+                <h2 class="reference-title">
+
+                    Match Evidence
+
+                </h2>
+
+
+                <div class="reference-description">
+
+                    See exactly which terms were identified in each document.
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JD / CV TABS
+    ====================================================== -->
+
+    <div class="reference-tabs">
+
+
+        <button
+            type="button"
+            class="reference-tab active"
+            data-reference-tab="jd"
+        >
+
+            <i class="fa-solid fa-file-lines"></i>
+
+            Job Description
+
+        </button>
+
+
+        <button
+            type="button"
+            class="reference-tab"
+            data-reference-tab="cv"
+        >
+
+            <i class="fa-regular fa-file"></i>
+
+            Your CV
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         COLOUR LEGEND
+    ====================================================== -->
+
+    <div class="jd-legend">
+
+
+        <div class="legend-item">
+
+            <span class="legend-dot legend-hard"></span>
+
+            Hard skills
+
+        </div>
+
+
+        <div class="legend-item">
+
+            <span class="legend-dot legend-soft"></span>
+
+            Soft skills
+
+        </div>
+
+
+        <div class="legend-item">
+
+            <span class="legend-dot legend-other"></span>
+
+            Other keywords
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JOB DESCRIPTION
+    ====================================================== -->
+
+    <div
+        class="
+            reference-content
+            active
+        "
+        id="jdReference"
+    >
+
+        {{ scan.analysis.highlighted_jd|safe }}
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CV
+    ====================================================== -->
+
+    <div
+        class="reference-content"
+        id="cvReference"
+    >
+
+        <div class="cv-note">
+
+            <strong>Colour coding:</strong>
+
+            Green terms are hard skills,
+            yellow terms are soft skills,
+            and blue terms are other selected keywords.
+
+            Only terms identified as requirements by the analysis
+            are highlighted.
+
+        </div>
+
+
+        <div id="highlightedCV">
+
+            Preparing CV highlights...
+
+        </div>
+
+    </div>
+
+
+</aside>
+
+
+</section>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     COPY TOAST
+========================================================== -->
+
+<div
+    class="copy-toast"
+    id="copyToast"
+>
+
+    Missing keywords copied
+
+</div>
+
+
+
+<!-- =========================================================
+     BOTTOM NAV
+========================================================== -->
+
+<nav class="bottom-nav">
+
+
+    <a
+        href="{% url 'account_dashboard' %}"
+        class="bottom-link"
+    >
+
+        <i class="fa-regular fa-user"></i>
+
+        <span>
+            Account
+        </span>
+
+    </a>
+
+
+
+    <a
+        href="{% url 'scan_cv' %}"
+        class="bottom-link active"
+    >
+
+        <i class="fa-solid fa-magnifying-glass-chart"></i>
+
+        <span>
+            Scan CV
+        </span>
+
+    </a>
+
+
+
+    <a
+        href="{% url 'landing' %}#how-it-works"
+        class="bottom-link"
+    >
+
+        <i class="fa-regular fa-circle-question"></i>
+
+        <span>
+            How it works
+        </span>
+
+    </a>
+
+
+
+    <a
+        href="{% url 'landing' %}#pricing"
+        class="bottom-link"
+    >
+
+        <i class="fa-solid fa-tag"></i>
+
+        <span>
+            Pricing
+        </span>
+
+    </a>
+
+
+
+    <a
+        href="{% url 'landing' %}#benefits"
+        class="bottom-link"
+    >
+
+        <i class="fa-solid fa-star"></i>
+
+        <span>
+            Benefits
+        </span>
+
+    </a>
+
+
+</nav>
+
+
+
+<script>
+
+
+/* ============================================================
+   RESCAN FORM
+============================================================ */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const form =
+            document.getElementById(
+                "rescanForm"
+            );
+
+        const cvFile =
+            document.getElementById(
+                "rescanCvFile"
+            );
+
+        const cvText =
+            document.getElementById(
+                "rescanCvText"
+            );
+
+        const button =
+            document.getElementById(
+                "rescanButton"
+            );
+
+
+        if (
+            !form ||
+            !cvFile ||
+            !cvText
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+            If a new CV file is uploaded,
+            it takes priority.
+
+            If no file is uploaded, the existing
+            / edited CV text is submitted as
+            "cv_text".
+        */
+
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+
+
+                /*
+                    If there is no uploaded file,
+                    make sure the CV textarea contains
+                    something.
+                */
+
+                if (
+                    !cvFile.files.length &&
+                    !cvText.value.trim()
+                ) {
+
+                    event.preventDefault();
+
+
+                    alert(
+                        "Please upload a CV or provide CV text before scanning again."
+                    );
+
+
+                    return;
+
+                }
+
+
+                /*
+                    Disable button so the user cannot
+                    accidentally submit twice.
+                */
+
+                if (button) {
+
+                    button.disabled =
+                        true;
+
+
+                    button.innerHTML =
+                        '<i class="fa-solid fa-spinner fa-spin"></i> Scanning...';
+
+                }
+
+
+            }
+        );
+
+
+        /*
+            If the user uploads a new CV,
+            visually let them know that the
+            uploaded file will replace the
+            text currently in the box.
+        */
+
+        cvFile.addEventListener(
+            "change",
+            function () {
+
+
+                if (
+                    cvFile.files.length
+                ) {
+
+
+                    const fileName =
+                        cvFile.files[0].name;
+
+
+                    const hint =
+                        cvFile
+                            .parentElement
+                            .querySelector(
+                                ".rescan-hint"
+                            );
+
+
+                    if (hint) {
+
+                        hint.textContent =
+                            "New CV selected: " +
+                            fileName +
+                            ". This file will be used for the next scan.";
+
+                    }
+
+                }
+
+            }
+        );
+
+
+    }
+);
+
+
+
+/* ============================================================
+   REQUIREMENT STATUS
+============================================================ */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        const rows =
+            document.querySelectorAll(
+                ".requirement-row"
+            );
+
+
+        let coveredCount = 0;
+
+        let reviewCount = 0;
+
+        let missingCount = 0;
+
+
+
+        rows.forEach(
+            function (row) {
+
+
+                const jd =
+                    parseInt(
+                        row.dataset.jd || "0",
+                        10
+                    );
+
+
+                const cv =
+                    parseInt(
+                        row.dataset.cv || "0",
+                        10
+                    );
+
+
+                let status;
+
+
+                /*
+                    STATUS RULE:
+
+                    CV = 0
+                        MISSING
+
+                    CV > 0 but CV < JD
+                        NEEDS REVIEW
+
+                    CV >= JD
+                        COVERED
+                */
+
+                if (cv === 0) {
+
+                    status =
+                        "missing";
+
+                    missingCount++;
+
+                }
+
+                else if (cv >= jd) {
+
+                    status =
+                        "covered";
+
+                    coveredCount++;
+
+                }
+
+                else {
+
+                    status =
+                        "review";
+
+                    reviewCount++;
+
+                }
+
+
+                row.dataset.status =
+                    status;
+
+
+
+                /* =================================================
+                   COVERAGE
+                ================================================== */
+
+                let coverage =
+                    0;
+
+
+                if (jd > 0) {
+
+                    coverage =
+                        Math.min(
+                            cv / jd,
+                            1
+                        ) * 100;
+
+                }
+
+
+                coverage =
+                    Math.round(
+                        coverage * 100
+                    ) / 100;
+
+
+
+                const coverageText =
+                    row.querySelector(
+                        "[data-coverage]"
+                    );
+
+
+                const coverageFill =
+                    row.querySelector(
+                        "[data-coverage-fill]"
+                    );
+
+
+                if (coverageText) {
+
+                    coverageText.textContent =
+                        coverage + "%";
+
+                }
+
+
+                if (coverageFill) {
+
+                    coverageFill.style.width =
+                        coverage + "%";
+
+                }
+
+
+
+                /* =================================================
+                   STATUS PILL
+                ================================================== */
+
+                const statusPill =
+                    row.querySelector(
+                        "[data-status-pill]"
+                    );
+
+
+                if (!statusPill) {
+
+                    return;
+
+                }
+
+
+                statusPill.className =
+                    "status-pill";
+
+
+                if (
+                    status === "covered"
+                ) {
+
+
+                    statusPill.classList.add(
+                        "status-covered"
+                    );
+
+
+                    statusPill.innerHTML =
+                        '<i class="fa-solid fa-check"></i>' +
+                        ' Covered';
+
+                }
+
+
+                else if (
+                    status === "review"
+                ) {
+
+
+                    statusPill.classList.add(
+                        "status-review"
+                    );
+
+
+                    statusPill.innerHTML =
+                        '<i class="fa-solid fa-minus"></i>' +
+                        ' Needs review';
+
+                }
+
+
+                else {
+
+
+                    statusPill.classList.add(
+                        "status-missing"
+                    );
+
+
+                    statusPill.innerHTML =
+                        '<i class="fa-solid fa-xmark"></i>' +
+                        ' Missing';
+
+                }
+
+
+            }
+        );
+
+
+
+        /* =====================================================
+           UPDATE TOP COUNTS
+        ====================================================== */
+
+        const coveredElement =
+            document.getElementById(
+                "coveredCount"
+            );
+
+
+        const reviewElement =
+            document.getElementById(
+                "reviewCount"
+            );
+
+
+        const missingElement =
+            document.getElementById(
+                "missingCount"
+            );
+
+
+        if (coveredElement) {
+
+            coveredElement.textContent =
+                coveredCount;
+
+        }
+
+
+        if (reviewElement) {
+
+            reviewElement.textContent =
+                reviewCount;
+
+        }
+
+
+        if (missingElement) {
+
+            missingElement.textContent =
+                missingCount;
+
+        }
+
+
+
+        /* =====================================================
+           FILTER STATE
+        ====================================================== */
+
+        let selectedStatus =
+            "all";
+
+
+        let selectedCategory =
+            "all";
+
+
+        const statusButtons =
+            document.querySelectorAll(
+                "[data-status-filter]"
+            );
+
+
+        const categoryButtons =
+            document.querySelectorAll(
+                "[data-category-filter]"
+            );
+
+
+        const noResults =
+            document.getElementById(
+                "noResults"
+            );
+
+
+        const activeFilterMessage =
+            document.getElementById(
+                "activeFilterMessage"
+            );
+
+
+
+        /* =====================================================
+           APPLY FILTERS
+        ====================================================== */
+
+        function applyFilters() {
+
+
+            let visibleCount =
+                0;
+
+
+            rows.forEach(
+                function (row) {
+
+
+                    const rowStatus =
+                        row.dataset.status;
+
+
+                    const rowCategory =
+                        row.dataset.category;
+
+
+                    const statusMatches =
+                        selectedStatus === "all" ||
+                        rowStatus === selectedStatus;
+
+
+                    const categoryMatches =
+                        selectedCategory === "all" ||
+                        rowCategory === selectedCategory;
+
+
+                    const show =
+                        statusMatches &&
+                        categoryMatches;
+
+
+                    if (show) {
+
+                        row.classList.remove(
+                            "hidden"
+                        );
+
+                        visibleCount++;
+
+                    }
+
+                    else {
+
+                        row.classList.add(
+                            "hidden"
+                        );
+
+                    }
+
+                }
+            );
+
+
+
+            if (
+                visibleCount === 0
+            ) {
+
+                noResults.classList.add(
+                    "show"
+                );
+
+            }
+
+            else {
+
+                noResults.classList.remove(
+                    "show"
+                );
+
+            }
+
+
+
+            /* =================================================
+               FILTER MESSAGE
+            ================================================== */
+
+            let statusText =
+                "";
+
+
+            let categoryText =
+                "";
+
+
+            if (
+                selectedStatus !== "all"
+            ) {
+
+
+                if (
+                    selectedStatus ===
+                    "covered"
+                ) {
+
+                    statusText =
+                        "Covered";
+
+                }
+
+                else if (
+                    selectedStatus ===
+                    "review"
+                ) {
+
+                    statusText =
+                        "Needs review";
+
+                }
+
+                else {
+
+                    statusText =
+                        "Missing";
+
+                }
+
+            }
+
+
+            if (
+                selectedCategory !== "all"
+            ) {
+
+
+                if (
+                    selectedCategory ===
+                    "hard"
+                ) {
+
+                    categoryText =
+                        "Hard skills";
+
+                }
+
+                else if (
+                    selectedCategory ===
+                    "soft"
+                ) {
+
+                    categoryText =
+                        "Soft skills";
+
+                }
+
+                else {
+
+                    categoryText =
+                        "Other keywords";
+
+                }
+
+            }
+
+
+            const parts =
+                [];
+
+
+            if (statusText) {
+
+                parts.push(
+                    statusText
+                );
+
+            }
+
+
+            if (categoryText) {
+
+                parts.push(
+                    categoryText
+                );
+
+            }
+
+
+            if (
+                parts.length
+            ) {
+
+
+                activeFilterMessage.textContent =
+                    "Showing: " +
+                    parts.join(
+                        " + "
+                    );
+
+
+                activeFilterMessage.classList.add(
+                    "show"
+                );
+
+            }
+
+            else {
+
+
+                activeFilterMessage.textContent =
+                    "";
+
+
+                activeFilterMessage.classList.remove(
+                    "show"
+                );
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           STATUS FILTER BUTTONS
+        ====================================================== */
+
+        statusButtons.forEach(
+            function (button) {
+
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+
+                        selectedStatus =
+                            this.dataset.statusFilter;
+
+
+                        statusButtons.forEach(
+                            function (btn) {
+
+                                btn.classList.remove(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+
+                        this.classList.add(
+                            "active"
+                        );
+
+
+                        applyFilters();
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        /* =====================================================
+           CATEGORY FILTER BUTTONS
+        ====================================================== */
+
+        categoryButtons.forEach(
+            function (button) {
+
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+
+                        selectedCategory =
+                            this.dataset.categoryFilter;
+
+
+                        categoryButtons.forEach(
+                            function (btn) {
+
+                                btn.classList.remove(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+
+                        this.classList.add(
+                            "active"
+                        );
+
+
+                        applyFilters();
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        /* =====================================================
+           INITIAL FILTERS
+        ====================================================== */
+
+        applyFilters();
+
+
+
+        /* =====================================================
+           REFERENCE TABS
+        ====================================================== */
+
+        const referenceTabs =
+            document.querySelectorAll(
+                "[data-reference-tab]"
+            );
+
+
+        const jdReference =
+            document.getElementById(
+                "jdReference"
+            );
+
+
+        const cvReference =
+            document.getElementById(
+                "cvReference"
+            );
+
+
+        referenceTabs.forEach(
+            function (tab) {
+
+
+                tab.addEventListener(
+                    "click",
+                    function () {
+
+
+                        referenceTabs.forEach(
+                            function (item) {
+
+                                item.classList.remove(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+
+                        this.classList.add(
+                            "active"
+                        );
+
+
+                        const selected =
+                            this.dataset.referenceTab;
+
+
+                        if (
+                            selected === "jd"
+                        ) {
+
+
+                            jdReference.classList.add(
+                                "active"
+                            );
+
+
+                            cvReference.classList.remove(
+                                "active"
+                            );
+
+                        }
+
+                        else {
+
+
+                            jdReference.classList.remove(
+                                "active"
+                            );
+
+
+                            cvReference.classList.add(
+                                "active"
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        /* =====================================================
+           BUILD COLOUR-CODED CV
+        ====================================================== */
+
+        buildHighlightedCV();
+
+    }
+);
+
+
+
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
+
+function escapeHTML(
+    value
+) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* ============================================================
+   BUILD COLOUR-CODED CV
+============================================================ */
+
+function buildHighlightedCV() {
+
+
+    const output =
+        document.getElementById(
+            "highlightedCV"
+        );
+
+
+    if (!output) {
+
+        return;
+
+    }
+
+
+    const cvText =
+        `{{ scan.cv_text|escapejs }}`;
+
+
+    if (
+        !cvText.trim()
+    ) {
+
+        output.textContent =
+            "No CV text available.";
+
+        return;
+
+    }
+
+
+    let html =
+        escapeHTML(
+            cvText
+        );
+
+
+    const rows =
+        document.querySelectorAll(
+            ".requirement-row"
+        );
+
+
+    const terms =
+        [];
+
+
+    rows.forEach(
+        function (row) {
+
+
+            const nameElement =
+                row.querySelector(
+                    ".requirement-name"
+                );
+
+
+            if (!nameElement) {
+
+                return;
+
+            }
+
+
+            const term =
+                nameElement.textContent.trim();
+
+
+            const category =
+                row.dataset.category;
+
+
+            if (!term) {
+
+                return;
+
+            }
+
+
+            terms.push({
+
+                term:
+                    term,
+
+                category:
+                    category
+
+            });
+
+        }
+    );
+
+
+    /*
+        Longest phrases first.
+    */
+
+    terms.sort(
+        function (a, b) {
+
+            return (
+                b.term.length -
+                a.term.length
+            );
+
+        }
+    );
+
+
+    const placeholders =
+        [];
+
+
+    terms.forEach(
+        function (
+            item,
+            index
+        ) {
+
+
+            const term =
+                item.term.trim();
+
+
+            if (!term) {
+
+                return;
+
+            }
+
+
+            const escapedTerm =
+                term.replace(
+                    /[.*+?^${}()|[\]\\]/g,
+                    "\\$&"
+                );
+
+
+            const pattern =
+                new RegExp(
+                    "(?<![A-Za-z0-9])" +
+                    escapedTerm +
+                    "(?![A-Za-z0-9])",
+                    "gi"
+                );
+
+
+            html =
+                html.replace(
+                    pattern,
+                    function (
+                        match
+                    ) {
+
+
+                        const placeholder =
+                            "___CV_MATCH_" +
+                            index +
+                            "_" +
+                            placeholders.length +
+                            "___";
+
+
+                        const cssClass =
+                            "cv-" +
+                            item.category;
+
+
+                        placeholders.push({
+
+                            placeholder:
+                                placeholder,
+
+                            html:
+                                '<span class="' +
+                                cssClass +
+                                '">' +
+                                match +
+                                '</span>'
+
+                        });
+
+
+                        return placeholder;
+
+                    }
+                );
+
+        }
+    );
+
+
+
+    placeholders.forEach(
+        function (item) {
+
+
+            html =
+                html.replace(
+                    item.placeholder,
+                    item.html
+                );
+
+        }
+    );
+
+
+
+    /*
+        Preserve line breaks.
+    */
+
+    html =
+        html.replace(
+            /\r?\n/g,
+            "<br>"
+        );
+
+
+    output.innerHTML =
+        html;
+
+}
+
+
+
+/* ============================================================
+   COPY MISSING KEYWORDS
+============================================================ */
+
+function copyMissingKeywords() {
+
+
+    const chips =
+        document.querySelectorAll(
+            "#missingKeywords .missing-chip"
+        );
+
+
+    if (!chips.length) {
+
+        return;
+
+    }
+
+
+    const keywords =
+        Array.from(
+            chips
+        ).map(
+            function (chip) {
+
+                return chip.dataset.keyword;
+
+            }
+        );
+
+
+    const text =
+        keywords.join(
+            ", "
+        );
+
+
+    if (
+        navigator.clipboard &&
+        navigator.clipboard.writeText
+    ) {
+
+
+        navigator.clipboard.writeText(
+            text
+        )
+        .then(
+            function () {
+
+                showCopyToast();
+
+            }
+        )
+        .catch(
+            function () {
+
+                fallbackCopy(
+                    text
+                );
+
+            }
+        );
+
+
+    }
+
+    else {
+
+        fallbackCopy(
+            text
+        );
+
+    }
+
+}
+
+
+
+/* ============================================================
+   FALLBACK COPY
+============================================================ */
+
+function fallbackCopy(
+    text
+) {
+
+
+    const textarea =
+        document.createElement(
+            "textarea"
+        );
+
+
+    textarea.value =
+        text;
+
+
+    textarea.style.position =
+        "fixed";
+
+
+    textarea.style.opacity =
+        "0";
+
+
+    document.body.appendChild(
+        textarea
+    );
+
+
+    textarea.focus();
+
+    textarea.select();
+
+
+    try {
+
+        document.execCommand(
+            "copy"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+    }
+
+
+    textarea.remove();
+
+
+    showCopyToast();
+
+}
+
+
+
+/* ============================================================
+   COPY TOAST
+============================================================ */
+
+function showCopyToast() {
+
+
+    const toast =
+        document.getElementById(
+            "copyToast"
+        );
+
+
+    if (!toast) {
+
+        return;
+
+    }
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        function () {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        1800
+    );
+
+}
+
+</script>
+
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+</body>
+
+</html>

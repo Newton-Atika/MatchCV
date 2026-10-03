@@ -1,0 +1,1727 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Scan Your CV — CVMatch</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+        :root {
+            --primary: #695cff;
+            --primary-dark: #574be8;
+            --background: #f3f4fa;
+            --surface: #f4f5fb;
+            --text: #171827;
+            --muted: #74758a;
+            --shadow-light: rgba(255,255,255,0.95);
+            --shadow-dark: rgba(186,190,210,0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding-bottom: 100px;
+            background: var(--background);
+            font-family: "Inter", sans-serif;
+            color: var(--text);
+        }
+
+        /* =========================
+           TOP NAVIGATION
+        ========================== */
+
+        .topbar {
+            padding: 18px 0;
+            background: var(--surface);
+            box-shadow: 0 5px 20px rgba(180,184,205,0.18);
+        }
+
+        .brand {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.6px;
+        }
+
+        .brand span {
+            color: var(--primary);
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================== */
+
+        .scanner {
+            width: 100%;
+            max-width: 850px;
+            margin: auto;
+            padding: 48px 20px 40px;
+        }
+
+        .heading {
+            margin-bottom: 30px;
+        }
+
+        .heading h1 {
+            margin-bottom: 12px;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .heading p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+
+        /* =========================
+           STEP INDICATOR
+        ========================== */
+
+        .stepper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .step-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .step-circle {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #e7e8f1;
+            color: #85869a;
+            font-size: 13px;
+            font-weight: 800;
+            transition: all 0.2s ease;
+        }
+
+        .step-item.active .step-circle {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 12px rgba(105,92,255,0.2);
+        }
+
+        .step-item.completed .step-circle {
+            background: #e7e3ff;
+            color: var(--primary);
+        }
+
+        .step-text {
+            min-width: 0;
+        }
+
+        .step-label {
+            color: #9293a5;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .step-name {
+            color: #85869a;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .step-item.active .step-label,
+        .step-item.active .step-name,
+        .step-item.completed .step-name {
+            color: var(--primary);
+        }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            min-width: 12px;
+            background: #e2e3ed;
+            border-radius: 5px;
+        }
+
+        .step-line.completed {
+            background: var(--primary);
+        }
+
+        /* =========================
+           MAIN CARD
+        ========================== */
+
+        .scanner-card {
+            padding: 32px;
+            border-radius: 25px;
+            background: var(--surface);
+            box-shadow:
+                -8px -8px 18px var(--shadow-light),
+                8px 8px 20px var(--shadow-dark);
+        }
+
+        .step-panel {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .step-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-heading {
+            margin-bottom: 25px;
+        }
+
+        .step-heading h2 {
+            margin-bottom: 9px;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .step-heading p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+
+        /* =========================
+           INPUT LABELS
+        ========================== */
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           CV INPUT MODE
+        ========================== */
+
+        .input-tabs {
+            display: flex;
+            gap: 10px;
+            padding: 5px;
+            margin-bottom: 22px;
+            border-radius: 14px;
+            background: #e9eaf3;
+        }
+
+        .input-tab {
+            flex: 1;
+            padding: 12px 10px;
+            border: none;
+            border-radius: 11px;
+            background: transparent;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .input-tab i {
+            margin-right: 6px;
+        }
+
+        .input-tab.active {
+            background: var(--surface);
+            color: var(--primary);
+            box-shadow:
+                3px 3px 8px rgba(186,190,210,0.2),
+                -3px -3px 8px rgba(255,255,255,0.8);
+        }
+
+        .cv-mode {
+            display: none;
+        }
+
+        .cv-mode.active {
+            display: block;
+        }
+
+        /* =========================
+           UPLOAD BOX
+        ========================== */
+
+        .upload-box {
+            padding: 35px 20px;
+            text-align: center;
+            border: 1.5px dashed #c9c8e4;
+            border-radius: 20px;
+            background: #f0f1f9;
+            transition: border-color 0.2s ease;
+        }
+
+        .upload-box.dragover {
+            border-color: var(--primary);
+            background: #eeedff;
+        }
+
+        .upload-icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            background: var(--surface);
+            color: var(--primary);
+            font-size: 23px;
+            box-shadow:
+                -4px -4px 10px rgba(255,255,255,0.9),
+                4px 4px 10px rgba(186,190,210,0.25);
+        }
+
+        .upload-box h5 {
+            margin-bottom: 8px;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .upload-box p {
+            margin-bottom: 18px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .choose-file-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 11px;
+            background: var(--primary);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .choose-file-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .selected-file {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            margin-top: 18px;
+            padding: 13px 15px;
+            border-radius: 13px;
+            background: #eae8ff;
+            color: var(--primary);
+            text-align: left;
+        }
+
+        .selected-file.visible {
+            display: flex;
+        }
+
+        .selected-file i {
+            font-size: 20px;
+        }
+
+        .selected-file-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .selected-file-name {
+            overflow-wrap: anywhere;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .selected-file-size {
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .remove-file {
+            border: none;
+            background: transparent;
+            color: #9b5263;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        /* =========================
+           TEXT INPUTS
+        ========================== */
+
+        .form-control {
+            width: 100%;
+            border: none;
+            border-radius: 15px;
+            padding: 15px;
+            background: var(--surface);
+            color: var(--text);
+            font-family: "Inter", sans-serif;
+            font-size: 13px;
+            box-shadow:
+                inset 4px 4px 9px rgba(186,190,210,0.22),
+                inset -4px -4px 9px rgba(255,255,255,0.85);
+        }
+
+        .form-control:focus {
+            border: none;
+            outline: 2px solid rgba(105,92,255,0.35);
+            box-shadow:
+                inset 4px 4px 9px rgba(186,190,210,0.22),
+                inset -4px -4px 9px rgba(255,255,255,0.85);
+        }
+
+        textarea.form-control {
+            min-height: 260px;
+            resize: vertical;
+            line-height: 1.7;
+        }
+
+        .input-hint {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .character-count {
+            white-space: nowrap;
+        }
+
+        /* =========================
+           REVIEW PANEL
+        ========================== */
+
+        .review-box {
+            padding: 20px;
+            border-radius: 17px;
+            background: #eff0f8;
+            margin-bottom: 15px;
+        }
+
+        .review-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .review-title i {
+            color: var(--primary);
+        }
+
+        .review-content {
+            max-height: 140px;
+            overflow-y: auto;
+            color: #606177;
+            font-size: 12px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .review-file {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #606177;
+            font-size: 12px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .review-file i {
+            color: var(--primary);
+            font-size: 19px;
+        }
+
+        .review-note {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 14px 16px;
+            border-radius: 13px;
+            background: #eeedff;
+            color: #5e54bb;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .review-note i {
+            margin-top: 2px;
+        }
+
+        /* =========================
+           NAVIGATION BUTTONS
+        ========================== */
+
+        .step-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .step-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-width: 130px;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 13px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-next,
+        .btn-scan {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 8px 18px rgba(105,92,255,0.2);
+        }
+
+        .btn-next:hover,
+        .btn-scan:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-back {
+            background: #e9eaf3;
+            color: var(--muted);
+        }
+
+        .btn-back:hover {
+            background: #dedfeb;
+            color: var(--text);
+        }
+
+        .step-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn {
+            min-width: 170px;
+        }
+
+        .alert {
+            border-radius: 13px;
+            font-size: 13px;
+        }
+
+        /* =========================
+           BOTTOM NAVIGATION
+        ========================== */
+
+        .bottom-nav {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            padding: 10px 12px 12px;
+            background: rgba(244,245,251,0.96);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 -5px 20px rgba(180,184,205,0.22);
+        }
+
+        .bottom-nav-inner {
+            width: 100%;
+            max-width: 700px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 5px;
+        }
+
+        .bottom-link {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 7px 4px;
+            border-radius: 14px;
+            color: #85869a;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .bottom-link i {
+            font-size: 17px;
+        }
+
+        .bottom-link:hover {
+            color: var(--primary);
+        }
+
+        .bottom-link.active {
+            color: var(--primary);
+            background: #eeeff8;
+            box-shadow:
+                inset 3px 3px 7px rgba(186,190,210,0.22),
+                inset -3px -3px 7px rgba(255,255,255,0.85);
+        }
+
+        /* =========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 600px) {
+            .scanner {
+                padding: 35px 17px;
+            }
+
+            .heading h1 {
+                font-size: 27px;
+            }
+
+            .scanner-card {
+                padding: 22px;
+                border-radius: 21px;
+            }
+
+            .stepper {
+                gap: 5px;
+            }
+
+            .step-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 7px;
+            }
+
+            .step-circle {
+                width: 34px;
+                height: 34px;
+                font-size: 12px;
+            }
+
+            .step-name {
+                font-size: 10px;
+            }
+
+            .step-label {
+                font-size: 9px;
+            }
+
+            .step-line {
+                margin-top: 16px;
+            }
+
+            .step-heading h2 {
+                font-size: 19px;
+            }
+
+            .input-tab {
+                font-size: 11px;
+                padding: 11px 6px;
+            }
+
+            .step-btn {
+                min-width: 0;
+                padding: 13px 15px;
+            }
+
+            .submit-btn {
+                min-width: 0;
+            }
+
+            .bottom-nav {
+                padding: 8px 7px 10px;
+            }
+
+            .bottom-link {
+                font-size: 9px;
+                gap: 4px;
+                padding: 7px 2px;
+            }
+
+            .bottom-link i {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .step-name {
+                font-size: 9px;
+            }
+
+            .step-actions {
+                gap: 8px;
+            }
+
+            .step-btn {
+                font-size: 11px;
+                padding: 12px 10px;
+            }
+
+            .bottom-link span {
+                font-size: 8px;
+            }
+
+            .bottom-link i {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         TOP BAR
+    ========================== -->
+
+    <header class="topbar">
+        <div class="container">
+            <a href="{% url 'landing' %}" class="brand">
+                CV<span>Match</span>
+            </a>
+        </div>
+    </header>
+
+
+    <!-- =========================
+         SCANNER
+    ========================== -->
+
+    <main class="scanner">
+
+        <div class="heading">
+            <h1>Find out how your CV matches the job.</h1>
+
+            <p>
+                Complete three simple steps to analyze your CV
+                against a job description and discover your
+                skills match.
+            </p>
+        </div>
+
+
+        <!-- DJANGO MESSAGES -->
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+
+        <!-- =========================
+             STEP INDICATOR
+        ========================== -->
+
+        <div class="stepper" aria-label="Scanning progress">
+
+            <div class="step-item active" data-step-indicator="1">
+                <div class="step-circle">
+                    <span>1</span>
+                </div>
+
+                <div class="step-text">
+                    <div class="step-label">STEP 1</div>
+                    <div class="step-name">Your CV</div>
+                </div>
+            </div>
+
+            <div class="step-line"></div>
+
+            <div class="step-item" data-step-indicator="2">
+                <div class="step-circle">
+                    <span>2</span>
+                </div>
+
+                <div class="step-text">
+                    <div class="step-label">STEP 2</div>
+                    <div class="step-name">Job details</div>
+                </div>
+            </div>
+
+            <div class="step-line"></div>
+
+            <div class="step-item" data-step-indicator="3">
+                <div class="step-circle">
+                    <span>3</span>
+                </div>
+
+                <div class="step-text">
+                    <div class="step-label">STEP 3</div>
+                    <div class="step-name">Scan</div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             SCAN FORM
+        ========================== -->
+
+        <form
+            id="cvScanForm"
+            method="POST"
+            enctype="multipart/form-data"
+            class="scanner-card"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- =========================
+                 STEP 1: YOUR CV
+            ========================== -->
+
+            <section
+                class="step-panel active"
+                id="step1"
+                aria-labelledby="step1Title"
+            >
+
+                <div class="step-heading">
+                    <h2 id="step1Title">
+                        Add your CV
+                    </h2>
+
+                    <p>
+                        Upload your CV or copy and paste its text.
+                        Choose whichever is more convenient.
+                    </p>
+                </div>
+
+
+                <!-- INPUT MODE TABS -->
+
+                <div class="input-tabs" role="group" aria-label="CV input method">
+
+                    <button
+                        type="button"
+                        class="input-tab active"
+                        id="uploadTab"
+                        aria-pressed="true"
+                    >
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        Upload CV
+                    </button>
+
+                    <button
+                        type="button"
+                        class="input-tab"
+                        id="pasteTab"
+                        aria-pressed="false"
+                    >
+                        <i class="fa-solid fa-paste"></i>
+                        Paste CV
+                    </button>
+
+                </div>
+
+
+                <!-- UPLOAD MODE -->
+
+                <div class="cv-mode active" id="uploadMode">
+
+                    <label class="form-label">
+                        Upload your CV file
+                    </label>
+
+                    <div class="upload-box" id="uploadBox">
+
+                        <div class="upload-icon">
+                            <i class="fa-solid fa-file-arrow-up"></i>
+                        </div>
+
+                        <h5>
+                            Drop your CV here
+                        </h5>
+
+                        <p>
+                            PDF, DOCX or TXT · Maximum 10 MB
+                        </p>
+
+                        <label
+                            for="cvFile"
+                            class="choose-file-btn"
+                        >
+                            <i class="fa-solid fa-folder-open"></i>
+                            Choose File
+                        </label>
+
+                        <input
+                            type="file"
+                            id="cvFile"
+                            name="cv_file"
+                            class="file-input"
+                            accept=".pdf,.docx,.txt"
+                        >
+
+                        <div
+                            class="selected-file"
+                            id="selectedFile"
+                        >
+                            <i class="fa-solid fa-file-lines"></i>
+
+                            <div class="selected-file-info">
+                                <div
+                                    class="selected-file-name"
+                                    id="selectedFileName"
+                                ></div>
+
+                                <div
+                                    class="selected-file-size"
+                                    id="selectedFileSize"
+                                ></div>
+                            </div>
+
+                            <button
+                                type="button"
+                                class="remove-file"
+                                id="removeFile"
+                                aria-label="Remove selected file"
+                            >
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASTE MODE -->
+
+                <div class="cv-mode" id="pasteMode">
+
+                    <label
+                        for="cv_text"
+                        class="form-label"
+                    >
+                        Paste your CV text
+                    </label>
+
+                    <textarea
+                        id="cv_text"
+                        name="cv_text"
+                        class="form-control"
+                        placeholder="Copy and paste the full text of your CV here..."
+                    ></textarea>
+
+                    <div class="input-hint">
+                        <span>
+                            Include your experience, education,
+                            skills and qualifications.
+                        </span>
+
+                        <span
+                            class="character-count"
+                            id="cvCount"
+                        >
+                            0 characters
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="step-actions">
+                    <span></span>
+
+                    <button
+                        type="button"
+                        class="step-btn btn-next"
+                        id="toStep2"
+                    >
+                        Next Step
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 STEP 2: JOB DESCRIPTION
+            ========================== -->
+
+            <section
+                class="step-panel"
+                id="step2"
+                aria-labelledby="step2Title"
+                hidden
+            >
+
+                <div class="step-heading">
+                    <h2 id="step2Title">
+                        Add the job description
+                    </h2>
+
+                    <p>
+                        Paste the full job description for the
+                        position you want to apply for. This helps
+                        CVMatch identify the required skills and
+                        compare them with your CV.
+                    </p>
+                </div>
+
+
+                <label
+                    for="job_description"
+                    class="form-label"
+                >
+                    Job Description
+                </label>
+
+                <textarea
+                    id="job_description"
+                    name="job_description"
+                    class="form-control"
+                    placeholder="Paste the full job description here..."
+                ></textarea>
+
+                <div class="input-hint">
+                    <span>
+                        Include the responsibilities,
+                        requirements and qualifications.
+                    </span>
+
+                    <span
+                        class="character-count"
+                        id="jdCount"
+                    >
+                        0 characters
+                    </span>
+                </div>
+
+
+                <div class="step-actions">
+
+                    <button
+                        type="button"
+                        class="step-btn btn-back"
+                        id="backToStep1"
+                    >
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back
+                    </button>
+
+                    <button
+                        type="button"
+                        class="step-btn btn-next"
+                        id="toStep3"
+                    >
+                        Review
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 STEP 3: REVIEW AND SCAN
+            ========================== -->
+
+            <section
+                class="step-panel"
+                id="step3"
+                aria-labelledby="step3Title"
+                hidden
+            >
+
+                <div class="step-heading">
+                    <h2 id="step3Title">
+                        Review and scan
+                    </h2>
+
+                    <p>
+                        Your CV and job description are ready.
+                        Review the information below before
+                        starting your analysis.
+                    </p>
+                </div>
+
+
+                <!-- CV REVIEW -->
+
+                <div class="review-box">
+
+                    <div class="review-title">
+                        <i class="fa-solid fa-file-lines"></i>
+                        Your CV
+                    </div>
+
+                    <div
+                        id="reviewCVFile"
+                        class="review-file"
+                        hidden
+                    >
+                        <i class="fa-solid fa-file-circle-check"></i>
+                        <span id="reviewCVFilename"></span>
+                    </div>
+
+                    <div
+                        id="reviewCVText"
+                        class="review-content"
+                        hidden
+                    ></div>
+
+                </div>
+
+
+                <!-- JOB DESCRIPTION REVIEW -->
+
+                <div class="review-box">
+
+                    <div class="review-title">
+                        <i class="fa-solid fa-briefcase"></i>
+                        Job Description
+                    </div>
+
+                    <div
+                        class="review-content"
+                        id="reviewJD"
+                    ></div>
+
+                </div>
+
+
+                <!-- INFORMATION NOTE -->
+
+                <div class="review-note">
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <span>
+                        CVMatch will now analyze the CV against
+                        the job description. Once submitted,
+                        you will proceed to the analysis process.
+                    </span>
+                </div>
+
+
+                <div class="step-actions">
+
+                    <button
+                        type="button"
+                        class="step-btn btn-back"
+                        id="backToStep2"
+                    >
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="step-btn btn-scan submit-btn"
+                        id="scanButton"
+                    >
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Scan My CV
+                    </button>
+
+                </div>
+
+            </section>
+
+        </form>
+
+    </main>
+
+
+    <!-- =========================
+         BOTTOM NAVIGATION
+    ========================== -->
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+
+        <div class="bottom-nav-inner">
+
+            <a
+                href="{% url 'account_dashboard' %}"
+                class="bottom-link"
+            >
+                <i class="fa-regular fa-user"></i>
+                <span>Account</span>
+            </a>
+
+
+            <a
+                href="{% url 'scan_cv' %}"
+                class="bottom-link active"
+                aria-current="page"
+            >
+                <i class="fa-solid fa-file-magnifying-glass"></i>
+                <span>Scan CV</span>
+            </a>
+
+
+            <a
+                href="{% url 'landing' %}#how-it-works"
+                class="bottom-link"
+            >
+                <i class="fa-solid fa-circle-info"></i>
+                <span>How it works</span>
+            </a>
+
+
+            <a
+                href="{% url 'landing' %}#pricing"
+                class="bottom-link"
+            >
+                <i class="fa-solid fa-tag"></i>
+                <span>Pricing</span>
+            </a>
+
+
+            <a
+                href="{% url 'landing' %}#benefits"
+                class="bottom-link"
+            >
+                <i class="fa-solid fa-star"></i>
+                <span>Benefits</span>
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const form = document.getElementById("cvScanForm");
+
+            const panels = [
+                document.getElementById("step1"),
+                document.getElementById("step2"),
+                document.getElementById("step3")
+            ];
+
+            const indicators = document.querySelectorAll(
+                "[data-step-indicator]"
+            );
+
+            const stepLines = document.querySelectorAll(".step-line");
+
+            const uploadTab = document.getElementById("uploadTab");
+            const pasteTab = document.getElementById("pasteTab");
+
+            const uploadMode = document.getElementById("uploadMode");
+            const pasteMode = document.getElementById("pasteMode");
+
+            const cvFile = document.getElementById("cvFile");
+            const cvText = document.getElementById("cv_text");
+            const jobDescription = document.getElementById("job_description");
+
+            const selectedFile = document.getElementById("selectedFile");
+            const selectedFileName = document.getElementById("selectedFileName");
+            const selectedFileSize = document.getElementById("selectedFileSize");
+
+            const uploadBox = document.getElementById("uploadBox");
+
+            const cvCount = document.getElementById("cvCount");
+            const jdCount = document.getElementById("jdCount");
+
+            const reviewCVFile = document.getElementById("reviewCVFile");
+            const reviewCVFilename = document.getElementById("reviewCVFilename");
+            const reviewCVText = document.getElementById("reviewCVText");
+            const reviewJD = document.getElementById("reviewJD");
+
+            const scanButton = document.getElementById("scanButton");
+
+            let currentStep = 1;
+            let inputMode = "upload";
+
+            const MAX_FILE_SIZE = 10 * 1024 * 1024;
+            const ALLOWED_EXTENSIONS = ["pdf", "docx", "txt"];
+
+
+            /* =========================
+               STEP NAVIGATION
+            ========================== */
+
+            function showStep(step) {
+                currentStep = step;
+
+                panels.forEach((panel, index) => {
+                    const active = index + 1 === step;
+
+                    panel.classList.toggle("active", active);
+                    panel.hidden = !active;
+                });
+
+                indicators.forEach((indicator) => {
+                    const number = Number(
+                        indicator.dataset.stepIndicator
+                    );
+
+                    indicator.classList.toggle(
+                        "active",
+                        number === step
+                    );
+
+                    indicator.classList.toggle(
+                        "completed",
+                        number < step
+                    );
+
+                    const circle = indicator.querySelector(
+                        ".step-circle"
+                    );
+
+                    if (number < step) {
+                        circle.innerHTML =
+                            '<i class="fa-solid fa-check"></i>';
+                    } else {
+                        circle.textContent = number;
+                    }
+                });
+
+                stepLines.forEach((line, index) => {
+                    line.classList.toggle(
+                        "completed",
+                        index + 1 < step
+                    );
+                });
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+
+
+            /* =========================
+               INPUT MODE
+            ========================== */
+
+            function setInputMode(mode) {
+                inputMode = mode;
+
+                const uploadSelected = mode === "upload";
+
+                uploadTab.classList.toggle(
+                    "active",
+                    uploadSelected
+                );
+
+                pasteTab.classList.toggle(
+                    "active",
+                    !uploadSelected
+                );
+
+                uploadTab.setAttribute(
+                    "aria-pressed",
+                    String(uploadSelected)
+                );
+
+                pasteTab.setAttribute(
+                    "aria-pressed",
+                    String(!uploadSelected)
+                );
+
+                uploadMode.classList.toggle(
+                    "active",
+                    uploadSelected
+                );
+
+                pasteMode.classList.toggle(
+                    "active",
+                    !uploadSelected
+                );
+
+                cvFile.disabled = !uploadSelected;
+                cvText.disabled = uploadSelected;
+            }
+
+            uploadTab.addEventListener("click", function () {
+                setInputMode("upload");
+            });
+
+            pasteTab.addEventListener("click", function () {
+                setInputMode("paste");
+            });
+
+
+            /* =========================
+               FILE SELECTION
+            ========================== */
+
+            function formatFileSize(bytes) {
+                if (bytes < 1024 * 1024) {
+                    return (bytes / 1024).toFixed(1) + " KB";
+                }
+
+                return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+            }
+
+            function validateFile(file) {
+                if (!file) {
+                    alert("Please select your CV file.");
+                    return false;
+                }
+
+                const extension = file.name
+                    .split(".")
+                    .pop()
+                    .toLowerCase();
+
+                if (!ALLOWED_EXTENSIONS.includes(extension)) {
+                    alert(
+                        "Unsupported file type. Please upload a PDF, DOCX or TXT file."
+                    );
+                    return false;
+                }
+
+                if (file.size > MAX_FILE_SIZE) {
+                    alert(
+                        "Your file is too large. The maximum file size is 10 MB."
+                    );
+                    return false;
+                }
+
+                if (file.size === 0) {
+                    alert("The selected file is empty.");
+                    return false;
+                }
+
+                return true;
+            }
+
+            function displaySelectedFile(file) {
+                if (!file) {
+                    selectedFile.classList.remove("visible");
+                    selectedFileName.textContent = "";
+                    selectedFileSize.textContent = "";
+                    return;
+                }
+
+                selectedFileName.textContent = file.name;
+                selectedFileSize.textContent = formatFileSize(file.size);
+                selectedFile.classList.add("visible");
+            }
+
+            cvFile.addEventListener("change", function () {
+                const file = cvFile.files[0];
+
+                if (!file) {
+                    displaySelectedFile(null);
+                    return;
+                }
+
+                if (!validateFile(file)) {
+                    cvFile.value = "";
+                    displaySelectedFile(null);
+                    return;
+                }
+
+                displaySelectedFile(file);
+            });
+
+            document.getElementById("removeFile").addEventListener(
+                "click",
+                function () {
+                    cvFile.value = "";
+                    displaySelectedFile(null);
+                }
+            );
+
+
+            /* =========================
+               DRAG AND DROP
+            ========================== */
+
+            uploadBox.addEventListener("dragover", function (event) {
+                event.preventDefault();
+                uploadBox.classList.add("dragover");
+            });
+
+            uploadBox.addEventListener("dragleave", function (event) {
+                if (!uploadBox.contains(event.relatedTarget)) {
+                    uploadBox.classList.remove("dragover");
+                }
+            });
+
+            uploadBox.addEventListener("drop", function (event) {
+                event.preventDefault();
+                uploadBox.classList.remove("dragover");
+
+                const file = event.dataTransfer.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                setInputMode("upload");
+
+                if (!validateFile(file)) {
+                    return;
+                }
+
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                cvFile.files = dataTransfer.files;
+
+                displaySelectedFile(file);
+            });
+
+
+            /* =========================
+               CHARACTER COUNTERS
+            ========================== */
+
+            function updateCount(element, value) {
+                element.textContent =
+                    value.length.toLocaleString() + " characters";
+            }
+
+            cvText.addEventListener("input", function () {
+                updateCount(cvCount, cvText.value);
+            });
+
+            jobDescription.addEventListener("input", function () {
+                updateCount(jdCount, jobDescription.value);
+            });
+
+
+            /* =========================
+               STEP 1 VALIDATION
+            ========================== */
+
+            function validateCV() {
+                if (inputMode === "upload") {
+                    const file = cvFile.files[0];
+
+                    if (!validateFile(file)) {
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                const text = cvText.value.trim();
+
+                if (!text) {
+                    alert("Please paste your CV before continuing.");
+                    cvText.focus();
+                    return false;
+                }
+
+                if (text.length < 50) {
+                    alert(
+                        "The pasted CV appears too short. Please include more of your CV."
+                    );
+                    cvText.focus();
+                    return false;
+                }
+
+                return true;
+            }
+
+
+            /* =========================
+               STEP 2 VALIDATION
+            ========================== */
+
+            function validateJD() {
+                const text = jobDescription.value.trim();
+
+                if (!text) {
+                    alert("Please paste the job description.");
+                    jobDescription.focus();
+                    return false;
+                }
+
+                if (text.length < 30) {
+                    alert(
+                        "The job description appears too short. Please paste more details."
+                    );
+                    jobDescription.focus();
+                    return false;
+                }
+
+                return true;
+            }
+
+
+            /* =========================
+               REVIEW
+            ========================== */
+
+            function prepareReview() {
+                if (inputMode === "upload") {
+                    const file = cvFile.files[0];
+
+                    reviewCVFile.hidden = false;
+                    reviewCVText.hidden = true;
+
+                    reviewCVFilename.textContent = file.name;
+                } else {
+                    reviewCVFile.hidden = true;
+                    reviewCVText.hidden = false;
+
+                    reviewCVText.textContent = cvText.value.trim();
+                }
+
+                reviewJD.textContent = jobDescription.value.trim();
+            }
+
+
+            /* =========================
+               STEP BUTTONS
+            ========================== */
+
+            document.getElementById("toStep2").addEventListener(
+                "click",
+                function () {
+                    if (!validateCV()) {
+                        return;
+                    }
+
+                    showStep(2);
+                }
+            );
+
+            document.getElementById("backToStep1").addEventListener(
+                "click",
+                function () {
+                    showStep(1);
+                }
+            );
+
+            document.getElementById("toStep3").addEventListener(
+                "click",
+                function () {
+                    if (!validateJD()) {
+                        return;
+                    }
+
+                    prepareReview();
+                    showStep(3);
+                }
+            );
+
+            document.getElementById("backToStep2").addEventListener(
+                "click",
+                function () {
+                    showStep(2);
+                }
+            );
+
+
+            /* =========================
+               FORM SUBMISSION
+            ========================== */
+
+            form.addEventListener("submit", function (event) {
+                if (!validateCV()) {
+                    event.preventDefault();
+                    showStep(1);
+                    return;
+                }
+
+                if (!validateJD()) {
+                    event.preventDefault();
+                    showStep(2);
+                    return;
+                }
+
+                scanButton.disabled = true;
+
+                scanButton.innerHTML =
+                    '<i class="fa-solid fa-spinner fa-spin"></i> Starting Scan...';
+            });
+
+
+            /* =========================
+               INITIALIZATION
+            ========================== */
+
+            setInputMode("upload");
+            showStep(1);
+
+        });
+    </script>
+
+</body>
+</html>

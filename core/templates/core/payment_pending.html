@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Payment | CVMatch</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+            color: #172033;
+        }
+
+        .card {
+            width: min(480px, 100%);
+            padding: 35px;
+            background: #fff;
+            border: 1px solid #e5e9f0;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(25,40,80,.05);
+        }
+
+        .icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 20px;
+            background: #e8f6ed;
+            color: #16834c;
+            font-size: 28px;
+        }
+
+        h1 { font-size: 23px; margin-bottom: 10px; }
+
+        p {
+            color: #687386;
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        button, a {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #16834c;
+            color: white;
+            margin-top: 24px;
+        }
+
+        a {
+            color: #3157d5;
+            margin-top: 10px;
+        }
+
+        .status {
+            margin-top: 18px;
+            font-size: 13px;
+            color: #687386;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="icon">✓</div>
+
+        <h1>Complete your M-Pesa payment</h1>
+
+        <p>
+            {{ display_message }}
+        </p>
+
+        <p>
+            Once you approve the payment on your phone, select
+            <strong>Check payment status</strong> below.
+        </p>
+
+        <div class="status" id="status">
+            Waiting for payment confirmation...
+        </div>
+
+        <button id="checkButton" type="button">
+            Check payment status
+        </button>
+
+        <a href="{% url 'subscription' %}">
+            Return to My Plan
+        </a>
+    </div>
+
+    <script>
+        const checkUrl = "{% url 'check_payment_status' payment.reference %}";
+        const statusElement = document.getElementById("status");
+        const checkButton = document.getElementById("checkButton");
+
+        async function checkStatus() {
+            checkButton.disabled = true;
+            checkButton.textContent = "Checking...";
+
+            try {
+                const response = await fetch(checkUrl, {
+                    method: "GET",
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.active) {
+                    statusElement.textContent =
+                        "Payment confirmed. Your plan is now active.";
+
+                    statusElement.style.color = "#16834c";
+                    checkButton.textContent = "Opening your plan...";
+
+                    window.location.href = "{% url 'subscription' %}";
+                    return;
+                }
+
+                statusElement.textContent =
+                    data.message || "Payment is still pending.";
+
+            } catch (error) {
+                statusElement.textContent =
+                    "We could not check the payment. Please try again.";
+            }
+
+            checkButton.disabled = false;
+            checkButton.textContent = "Check payment status";
+        }
+
+        checkButton.addEventListener("click", checkStatus);
+    </script>
+</body>
+</html>

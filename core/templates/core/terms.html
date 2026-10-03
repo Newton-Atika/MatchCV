@@ -1,0 +1,1153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Terms of Use | CVMatch</title>
+
+    <meta
+        name="description"
+        content="Read the CVMatch Terms of Use, including permitted use, upload restrictions, user responsibilities, subscriptions, privacy and account rules."
+    >
+
+    <style>
+        :root {
+            --primary: #174ea6;
+            --primary-dark: #103b80;
+            --text: #263238;
+            --muted: #667085;
+            --background: #f5f7fb;
+            --white: #ffffff;
+            --border: #e4e7ec;
+            --notice-bg: #eff6ff;
+            --notice-border: #93c5fd;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.75;
+        }
+
+        .topbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 17px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.8px;
+        }
+
+        .topbar a.back-link {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .topbar a.back-link:hover {
+            color: var(--primary);
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: 45px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 245px minmax(0, 1fr);
+            gap: 28px;
+            align-items: start;
+        }
+
+        .sidebar {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px 18px;
+            position: sticky;
+            top: 25px;
+        }
+
+        .sidebar h3 {
+            margin: 0 0 14px;
+            font-size: 14px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .sidebar a {
+            display: block;
+            text-decoration: none;
+            color: #475467;
+            padding: 7px 0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary);
+        }
+
+        .content {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 45px;
+            min-width: 0;
+        }
+
+        .eyebrow {
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 36px;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            margin: 0 0 12px;
+            color: #101828;
+        }
+
+        .updated {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        .intro {
+            font-size: 16px;
+            color: #475467;
+            margin-bottom: 30px;
+        }
+
+        .important-notice {
+            background: var(--notice-bg);
+            border: 1px solid var(--notice-border);
+            border-left: 5px solid var(--primary);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0 35px;
+        }
+
+        .important-notice strong {
+            color: var(--primary-dark);
+        }
+
+        .important-notice p {
+            margin: 6px 0 0;
+        }
+
+        section {
+            padding: 22px 0;
+            border-bottom: 1px solid #eef0f3;
+            scroll-margin-top: 25px;
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-size: 21px;
+            line-height: 1.4;
+            color: #101828;
+            margin: 0 0 14px;
+        }
+
+        h3 {
+            font-size: 16px;
+            color: #344054;
+            margin: 20px 0 8px;
+        }
+
+        p {
+            margin: 0 0 13px;
+        }
+
+        ul {
+            padding-left: 22px;
+            margin: 10px 0 18px;
+        }
+
+        li {
+            padding-left: 3px;
+            margin-bottom: 7px;
+        }
+
+        .contact-box {
+            margin-top: 25px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px 20px 40px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        @media (max-width: 850px) {
+            .page {
+                grid-template-columns: 1fr;
+                margin: 25px auto;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .sidebar nav {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 4px 15px;
+            }
+
+            .content {
+                padding: 30px 24px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .topbar {
+                padding: 15px 18px;
+            }
+
+            .brand {
+                font-size: 20px;
+            }
+
+            .page {
+                padding: 0 12px;
+            }
+
+            .content {
+                padding: 25px 18px;
+            }
+
+            .sidebar nav {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            h2 {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <a href="{% url 'landing' %}" class="brand">
+        CVMatch
+    </a>
+
+    <a href="{% url 'landing' %}" class="back-link">
+        Back to Home
+    </a>
+</header>
+
+<main class="page">
+
+    <aside class="sidebar">
+        <h3>On this page</h3>
+
+        <nav>
+            <a href="#introduction">1. Introduction</a>
+            <a href="#permitted-use">2. Permitted Use</a>
+            <a href="#upload-rules">3. Upload Restrictions</a>
+            <a href="#prohibited-conduct">4. Prohibited Conduct</a>
+            <a href="#results">5. Matching Results</a>
+            <a href="#responsibilities">6. Responsibilities</a>
+            <a href="#accounts">7. Accounts</a>
+            <a href="#payments">8. Payments</a>
+            <a href="#intellectual-property">9. Intellectual Property</a>
+            <a href="#privacy">10. Privacy</a>
+            <a href="#availability">11. Availability</a>
+            <a href="#liability">12. Liability</a>
+            <a href="#third-parties">13. Third Parties</a>
+            <a href="#changes">14. Changes</a>
+            <a href="#law">15. Governing Law</a>
+            <a href="#severability">16. Severability</a>
+            <a href="#waiver">17. No Waiver</a>
+            <a href="#agreement">18. Entire Agreement</a>
+            <a href="#contact">19. Contact</a>
+        </nav>
+    </aside>
+
+    <article class="content">
+
+        <div class="eyebrow">Legal information</div>
+
+        <h1>Terms of Use</h1>
+
+        <div class="updated">
+            Effective Date: [Insert Date] |
+            Last Updated: [Insert Date]
+        </div>
+
+        <p class="intro">
+            Welcome to CVMatch. These Terms of Use govern your access
+            to and use of the CVMatch website, platform, tools, features,
+            and related services.
+        </p>
+
+        <div class="important-notice">
+            <strong>Important: CVMatch is exclusively for CV and job
+            description matching.</strong>
+
+            <p>
+                You may submit only CVs or resumes and job descriptions
+                for their intended matching purpose. Uploading or
+                submitting unrelated documents, files, or text is
+                prohibited.
+            </p>
+        </div>
+
+        <section id="introduction">
+            <h2>1. Introduction and Acceptance of Terms</h2>
+
+            <p>
+                CVMatch ("CVMatch", "we", "our", or "us") provides
+                tools that help users analyze how closely their CVs
+                align with job descriptions. The Platform may extract
+                text, identify relevant skills and keywords, classify
+                terms, and generate matching scores and analysis.
+            </p>
+
+            <p>
+                By creating an account, accessing the Platform,
+                uploading documents, or using its services, you agree
+                to comply with these Terms.
+            </p>
+
+            <p>
+                If you do not agree with these Terms, you must not
+                access or use CVMatch.
+            </p>
+
+            <p>
+                You must be at least 18 years old or have the legal
+                capacity required to enter into a binding agreement
+                under applicable law.
+            </p>
+        </section>
+
+        <section id="permitted-use">
+            <h2>2. What Users Can Do on CVMatch</h2>
+
+            <h3>2.1 Create and Manage an Account</h3>
+
+            <ul>
+                <li>Register for a CVMatch account.</li>
+                <li>Log in and access your personal dashboard.</li>
+                <li>Manage your account information.</li>
+                <li>View previous scans where scan history is available.</li>
+                <li>Request account-related assistance or deletion.</li>
+            </ul>
+
+            <h3>2.2 Submit CVs and Resumes</h3>
+
+            <p>
+                Users may submit their own CVs or resumes for
+                analysis, provided the documents use supported
+                formats and are submitted for CV-matching purposes.
+            </p>
+
+            <h3>2.3 Submit Job Descriptions</h3>
+
+            <p>
+                Users may paste or otherwise submit genuine job
+                descriptions for comparison against their CVs.
+                Users must have the rights or authorization required
+                to use the content they submit.
+            </p>
+
+            <h3>2.4 Analyze CVs Against Job Descriptions</h3>
+
+            <p>Users may use CVMatch to:</p>
+
+            <ul>
+                <li>Compare a CV against a job description.</li>
+                <li>Identify skills and keywords in job requirements.</li>
+                <li>Identify corresponding skills in a CV.</li>
+                <li>Review hard skills, soft skills, and other keywords.</li>
+                <li>Review matching scores and skill coverage.</li>
+                <li>Identify potentially missing or underrepresented terms.</li>
+            </ul>
+
+            <h3>2.5 View Previous Scans</h3>
+
+            <p>
+                Where available, users may view previous analyses
+                through their accounts. Scan history may include
+                extracted text, job descriptions, matching results,
+                and related analysis information.
+            </p>
+
+            <h3>2.6 Improve CVs and Applications</h3>
+
+            <p>
+                Users may use the results to improve the clarity,
+                relevance, and presentation of their CVs and to
+                prepare for job applications and interviews.
+            </p>
+        </section>
+
+        <section id="upload-rules">
+            <h2>3. Strict Upload and Submission Restrictions</h2>
+
+            <p>
+                CVMatch is strictly limited to CV and job description
+                analysis. Users may submit only:
+            </p>
+
+            <ul>
+                <li>CVs or resumes intended for analysis.</li>
+                <li>Job descriptions intended for comparison against a CV.</li>
+            </ul>
+
+            <h3>3.1 Prohibited Uploads</h3>
+
+            <p>Users must not upload or submit:</p>
+
+            <ul>
+                <li>Academic assignments, essays, research papers, or theses.</li>
+                <li>Business reports, proposals, or presentations.</li>
+                <li>Invoices, receipts, bank statements, or financial records.</li>
+                <li>Identity documents as standalone uploads.</li>
+                <li>Medical records or health documents.</li>
+                <li>Photographs, videos, or audio files.</li>
+                <li>Software, executable files, scripts, or source code.</li>
+                <li>Compressed archives containing unrelated content.</li>
+                <li>Legal documents unrelated to CV or JD matching.</li>
+                <li>Spreadsheets or datasets unrelated to the permitted purpose.</li>
+                <li>Any other material unrelated to CV and JD matching.</li>
+            </ul>
+
+            <h3>3.2 Prohibited Text Submissions</h3>
+
+            <p>
+                The same restrictions apply to text fields and other
+                submission methods. Users must not paste general
+                questions, conversations, unrelated writing requests,
+                or other material into CV and JD fields.
+            </p>
+
+            <p>
+                A job description must genuinely describe a job,
+                position, internship, or other employment opportunity.
+                Unrelated text does not become an acceptable job
+                description simply because it is submitted in the
+                JD field.
+            </p>
+
+            <h3>3.3 Enforcement</h3>
+
+            <p>
+                CVMatch may reject, block, remove, or restrict
+                submissions that appear to violate these rules.
+                Repeated or deliberate misuse may result in temporary
+                suspension or permanent account termination.
+            </p>
+        </section>
+
+        <section id="prohibited-conduct">
+            <h2>4. Prohibited User Conduct</h2>
+
+            <h3>4.1 Unauthorized Personal Information</h3>
+
+            <p>Users must not:</p>
+
+            <ul>
+                <li>Upload another person's CV without the necessary authority or permission.</li>
+                <li>Process another person's personal information for unauthorized purposes.</li>
+                <li>Submit confidential information without the necessary authorization.</li>
+                <li>Impersonate another person or misuse their identity.</li>
+            </ul>
+
+            <h3>4.2 Misuse of the Platform</h3>
+
+            <ul>
+                <li>Use CVMatch as a general-purpose document or content-processing tool.</li>
+                <li>Manipulate results through deliberately misleading submissions.</li>
+                <li>Abuse scanning functionality or evade usage limits.</li>
+                <li>Use CVMatch for unlawful discrimination or unlawful employment practices.</li>
+            </ul>
+
+            <h3>4.3 Security Violations</h3>
+
+            <ul>
+                <li>Attempt unauthorized access to accounts or systems.</li>
+                <li>Introduce malware, viruses, or harmful code.</li>
+                <li>Interfere with Platform security or availability.</li>
+                <li>Bypass authentication or technical restrictions.</li>
+                <li>Reverse engineer or extract source code except where applicable law permits it.</li>
+            </ul>
+
+            <h3>4.4 Automated Access</h3>
+
+            <p>
+                Unless expressly authorized, users must not use
+                bots, crawlers, scraping tools, or automated systems
+                to access the Platform at scale, create multiple
+                accounts, or conduct bulk scans that disrupt
+                normal service.
+            </p>
+
+            <h3>4.5 Fraud and Unlawful Activities</h3>
+
+            <p>
+                Users must not use CVMatch to facilitate fraud,
+                identity theft, false employment information,
+                intellectual property violations, or other
+                unlawful conduct.
+            </p>
+
+            <h3>4.6 Interference With Other Users</h3>
+
+            <p>
+                Users must not harass, threaten, or intimidate
+                others, access another user's account or scan
+                history, or interfere with another person's
+                legitimate use of the Platform.
+            </p>
+        </section>
+
+        <section id="results">
+            <h2>5. How Users Should Use CV-Matching Results</h2>
+
+            <h3>5.1 Matching Scores Are Estimates</h3>
+
+            <p>
+                Matching scores represent the Platform's calculated
+                level of textual alignment between a submitted CV
+                and job description. They are not universal measures
+                of professional competence, suitability, or
+                employment prospects.
+            </p>
+
+            <h3>5.2 Classification May Be Imperfect</h3>
+
+            <p>
+                Automated analysis may miss relevant skills,
+                identify irrelevant terms, misclassify phrases,
+                overlook equivalent wording, or misinterpret
+                context and formatting.
+            </p>
+
+            <p>
+                Users should review identified skills, categories,
+                and matching results rather than relying on them
+                without verification.
+            </p>
+
+            <h3>5.3 Users Are Responsible for Their Applications</h3>
+
+            <p>
+                Users remain responsible for the accuracy,
+                honesty, and completeness of their CVs and
+                applications. Results must not be used to
+                fabricate qualifications, skills, or experience.
+            </p>
+
+            <h3>5.4 No Employment Guarantee</h3>
+
+            <p>CVMatch does not guarantee:</p>
+
+            <ul>
+                <li>Shortlisting, interviews, or job offers.</li>
+                <li>Recognition of CVMatch scores by employers.</li>
+                <li>Successful passage through an applicant tracking system.</li>
+                <li>That the analysis reflects an employer's actual selection criteria.</li>
+            </ul>
+
+            <h3>5.5 No Recruitment or Career Advice</h3>
+
+            <p>
+                CVMatch is a software tool, not a recruitment
+                agency, employment agency, career counsellor,
+                or professional hiring authority. Its output
+                should not replace professional advice where
+                such advice is necessary.
+            </p>
+        </section>
+
+        <section id="responsibilities">
+            <h2>6. User Responsibilities</h2>
+
+            <p>By using CVMatch, users agree to:</p>
+
+            <ul>
+                <li>Provide accurate registration information.</li>
+                <li>Keep account credentials secure.</li>
+                <li>Use the Platform only for its intended purpose.</li>
+                <li>Submit only permitted CVs and job descriptions.</li>
+                <li>Ensure they have the necessary rights to submit content.</li>
+                <li>Review the accuracy of extracted text and matching results.</li>
+                <li>Respect the intellectual property and privacy rights of others.</li>
+                <li>Comply with these Terms and applicable laws.</li>
+                <li>Report suspected unauthorized access or significant security issues.</li>
+                <li>Avoid actions that damage or disrupt the Platform.</li>
+            </ul>
+
+            <p>
+                Users are responsible for activity conducted
+                through their accounts, subject to applicable
+                law and CVMatch's own legal obligations.
+            </p>
+        </section>
+
+        <section id="accounts">
+            <h2>7. Account Registration, Security, and Termination</h2>
+
+            <h3>7.1 Account Creation</h3>
+
+            <p>
+                Some features require an account. Users must
+                provide the information requested during
+                registration and must not create accounts
+                using false or misleading identities.
+            </p>
+
+            <h3>7.2 Account Security</h3>
+
+            <p>
+                Users are responsible for maintaining the
+                confidentiality of their credentials. If an
+                account is suspected to be compromised,
+                users should secure it and contact support.
+            </p>
+
+            <h3>7.3 Voluntary Account Closure</h3>
+
+            <p>
+                Users may request account closure or deletion
+                through available settings or by contacting
+                the support channel. Closure may result in
+                loss of access to scan history and other
+                account-related information.
+            </p>
+
+            <p>
+                Some information may be retained where
+                required or permitted by law or necessary
+                for legitimate security, operational, or
+                dispute-resolution purposes. The Privacy
+                Policy explains relevant retention practices.
+            </p>
+
+            <h3>7.4 Suspension or Termination by CVMatch</h3>
+
+            <p>
+                CVMatch may suspend, restrict, or terminate
+                accounts where reasonably necessary, including
+                when a user:
+            </p>
+
+            <ul>
+                <li>Breaches these Terms.</li>
+                <li>Repeatedly submits prohibited content.</li>
+                <li>Attempts to compromise Platform security.</li>
+                <li>Engages in fraud, abuse, or unlawful activity.</li>
+                <li>Interferes with Platform operations.</li>
+                <li>Creates a material security, legal, or operational risk.</li>
+                <li>Fails to meet applicable payment obligations, where paid services exist.</li>
+            </ul>
+
+            <p>
+                Where appropriate and legally permissible,
+                CVMatch may provide notice and an opportunity
+                to address a violation. Immediate action may
+                be taken to address serious threats, suspected
+                fraud, legal requirements, or significant harm.
+            </p>
+
+            <h3>7.5 Consequences of Termination</h3>
+
+            <p>
+                Termination may restrict access to Platform
+                features, interrupt active scans, or make
+                scan history inaccessible. Paid subscriptions
+                will be handled according to applicable terms
+                and law.
+            </p>
+        </section>
+
+        <section id="payments">
+            <h2>8. Subscriptions, Payments, and Cancellations</h2>
+
+            <p>
+                This section applies if CVMatch offers paid
+                plans, subscriptions, credits, or other
+                paid features.
+            </p>
+
+            <h3>8.1 Free and Paid Features</h3>
+
+            <p>
+                Features, scan limits, pricing, and restrictions
+                applicable to each plan will be displayed
+                on the Platform or in the relevant purchase
+                information.
+            </p>
+
+            <h3>8.2 Pricing and Payment</h3>
+
+            <p>
+                Users agree to pay the price and applicable
+                charges disclosed at purchase. Currency,
+                taxes, transaction charges, and payment
+                processing fees will be disclosed where
+                required.
+            </p>
+
+            <h3>8.3 Recurring Subscriptions</h3>
+
+            <p>
+                Where subscriptions renew automatically,
+                the renewal frequency, amount, and cancellation
+                process will be disclosed before purchase.
+            </p>
+
+            <h3>8.4 Subscription Cancellation</h3>
+
+            <p>
+                Users may cancel through the applicable
+                account or billing settings, or by contacting
+                support where that option is provided.
+                Unless otherwise stated or required by law,
+                cancellation prevents future renewal but
+                does not automatically provide a refund
+                for the unused portion of a billing period.
+            </p>
+
+            <h3>8.5 Refunds</h3>
+
+            <p>
+                Refund eligibility is determined by the
+                refund policy presented at purchase and
+                applicable law. Non-waivable consumer
+                rights are not removed by these Terms.
+            </p>
+
+            <h3>8.6 Failed Payments</h3>
+
+            <p>
+                If payment fails, CVMatch may notify the
+                user and provide an opportunity to update
+                payment information. Unresolved payment
+                issues may result in restrictions on paid
+                features, subject to applicable law.
+            </p>
+
+            <h3>8.7 Changes to Pricing</h3>
+
+            <p>
+                CVMatch may change prices or subscription
+                structures. Where required, users will
+                receive advance notice of changes affecting
+                existing subscriptions and applicable
+                cancellation rights will be respected.
+            </p>
+        </section>
+
+        <section id="intellectual-property">
+            <h2>9. Intellectual Property Rights</h2>
+
+            <h3>9.1 CVMatch Ownership</h3>
+
+            <p>
+                The Platform, including its software, design,
+                branding, interfaces, original content,
+                and underlying systems, is owned by or
+                licensed to CVMatch and protected by
+                applicable intellectual property laws.
+            </p>
+
+            <p>
+                Users must not copy, reproduce, distribute,
+                modify, sell, or commercially exploit
+                protected Platform materials without
+                authorization, except as permitted by law.
+            </p>
+
+            <h3>9.2 User Content</h3>
+
+            <p>
+                Users retain the rights they hold in their
+                submitted CVs and job descriptions. By
+                submitting content, users grant CVMatch
+                the limited rights necessary to process
+                the content, provide the requested services,
+                maintain scan history where applicable,
+                and operate the Platform in accordance
+                with its Privacy Policy.
+            </p>
+
+            <p>
+                This permission does not transfer ownership
+                of a user's CV or job description to CVMatch.
+            </p>
+
+            <h3>9.3 Third-Party Content</h3>
+
+            <p>
+                Job descriptions may be owned by employers,
+                recruitment agencies, or other third parties.
+                Users are responsible for ensuring their
+                use and submission of such content is lawful.
+            </p>
+
+            <h3>9.4 Feedback</h3>
+
+            <p>
+                CVMatch may use voluntarily submitted
+                suggestions and feedback to improve its
+                services, subject to applicable law and
+                appropriate handling of confidential
+                personal information.
+            </p>
+        </section>
+
+        <section id="privacy">
+            <h2>10. Privacy and Data Protection</h2>
+
+            <p>
+                CVMatch may process personal information
+                and document content when users register,
+                submit CVs or job descriptions, and use
+                the Platform. The separate Privacy Policy
+                explains how this information is handled.
+            </p>
+
+            <h3>10.1 Information Processed</h3>
+
+            <p>Depending on the features used, information may include:</p>
+
+            <ul>
+                <li>Account and registration information.</li>
+                <li>Uploaded CV content and extracted text.</li>
+                <li>Submitted job descriptions.</li>
+                <li>Matching scores, skill classifications, and scan results.</li>
+                <li>Scan history and related usage information.</li>
+                <li>Technical information needed for security and operation.</li>
+            </ul>
+
+            <h3>10.2 Original Files and Extracted Text</h3>
+
+            <p>
+                Where CVMatch does not retain original uploaded
+                CV files, the Platform may process a file
+                to extract its text and store extracted text
+                and analysis results for scan history.
+                Extracted text may still contain personal
+                information and must be handled accordingly.
+            </p>
+
+            <h3>10.3 User Data Rights</h3>
+
+            <p>
+                Depending on applicable law and circumstances,
+                users may have rights to access, correct,
+                object to, or request deletion of personal
+                information. Requests may be submitted
+                through the privacy contact provided below.
+            </p>
+
+            <h3>10.4 Purpose of Processing</h3>
+
+            <p>
+                CVMatch is intended to process CVs and
+                job descriptions for CV-matching purposes.
+                Additional uses must be explained in the
+                Privacy Policy and supported by an
+                appropriate legal basis where required.
+            </p>
+        </section>
+
+        <section id="availability">
+            <h2>11. Service Availability and Technical Limitations</h2>
+
+            <p>
+                CVMatch aims to provide a reliable service
+                but does not guarantee uninterrupted,
+                continuous, or error-free availability.
+            </p>
+
+            <p>Interruptions may occur due to:</p>
+
+            <ul>
+                <li>Scheduled maintenance or software updates.</li>
+                <li>Technical failures or connectivity problems.</li>
+                <li>Third-party service interruptions.</li>
+                <li>Security incidents.</li>
+                <li>Events beyond reasonable control.</li>
+            </ul>
+
+            <p>
+                CVMatch may modify, suspend, or discontinue
+                features where reasonably necessary for
+                maintenance, security, operational needs,
+                or business decisions, subject to applicable
+                law and existing commitments.
+            </p>
+
+            <p>
+                Document quality, formatting, language,
+                file size, and extraction limitations may
+                affect processing accuracy and speed.
+            </p>
+        </section>
+
+        <section id="liability">
+            <h2>12. Disclaimers and Limitations of Liability</h2>
+
+            <h3>12.1 Informational Service</h3>
+
+            <p>
+                CVMatch is provided as a tool to assist
+                with CV and JD analysis. To the extent
+                permitted by law, CVMatch does not warrant
+                that every document will be processed
+                successfully, every skill will be detected,
+                every result will be accurate, or the
+                Platform will meet every user's
+                expectations.
+            </p>
+
+            <h3>12.2 User Decisions</h3>
+
+            <p>
+                Users are responsible for decisions made
+                using CVMatch results, including whether
+                to apply for a position or change a CV.
+                CVMatch does not control employers'
+                hiring decisions.
+            </p>
+
+            <h3>12.3 Limitation of Liability</h3>
+
+            <p>
+                To the extent permitted by applicable law,
+                CVMatch and its operators will not be
+                liable for indirect, incidental, special,
+                or consequential losses arising from
+                use of, or inability to use, the Platform.
+            </p>
+
+            <p>
+                Nothing in these Terms excludes or limits
+                liability where such exclusion or limitation
+                is prohibited by law, including applicable
+                consumer protections or liability that
+                cannot legally be excluded.
+            </p>
+
+            <h3>12.4 Submitted Content</h3>
+
+            <p>
+                Users are responsible for the content
+                they submit and for ensuring they have
+                the necessary rights and authority.
+                This does not remove responsibilities
+                that applicable law places on CVMatch.
+            </p>
+        </section>
+
+        <section id="third-parties">
+            <h2>13. Third-Party Services and Links</h2>
+
+            <p>
+                CVMatch may rely on third-party services
+                for hosting, payment processing, analytics,
+                authentication, or technical functions.
+                The Platform may also link to external
+                websites, including employer career pages.
+            </p>
+
+            <p>
+                Third-party services and websites may
+                have separate terms and privacy policies.
+                CVMatch does not control external websites
+                and is not responsible for their content,
+                availability, or practices, except where
+                applicable law provides otherwise.
+            </p>
+        </section>
+
+        <section id="changes">
+            <h2>14. Changes to These Terms</h2>
+
+            <p>
+                CVMatch may update these Terms to reflect
+                changes in its services, functionality,
+                business operations, legal obligations,
+                or other relevant circumstances.
+            </p>
+
+            <p>
+                When material changes are made, CVMatch
+                will provide notice through the Platform
+                or another appropriate method where
+                required. The revised Terms will state
+                their effective date.
+            </p>
+
+            <p>
+                Continued use after updated Terms take
+                effect may constitute acceptance where
+                permitted by law. Users who do not agree
+                should stop using the Platform and may
+                close their accounts.
+            </p>
+        </section>
+
+        <section id="law">
+            <h2>15. Governing Law and Dispute Resolution</h2>
+
+            <p>
+                These Terms are governed by the laws of
+                [Insert Applicable Jurisdiction].
+            </p>
+
+            <p>
+                The parties should first attempt to
+                resolve disputes through good-faith
+                communication. Unresolved disputes may
+                be referred to courts or other dispute
+                resolution mechanisms with jurisdiction
+                under applicable law.
+            </p>
+
+            <p>
+                Nothing in this section prevents users
+                from exercising statutory rights or
+                making complaints to a competent
+                regulatory authority.
+            </p>
+        </section>
+
+        <section id="severability">
+            <h2>16. Severability</h2>
+
+            <p>
+                If any provision of these Terms is found
+                invalid, unlawful, or unenforceable,
+                the remaining provisions will continue
+                to apply to the extent permitted by law.
+                An affected provision will be adjusted
+                only as necessary where legally permissible.
+            </p>
+        </section>
+
+        <section id="waiver">
+            <h2>17. No Waiver</h2>
+
+            <p>
+                If CVMatch does not immediately enforce
+                a provision of these Terms, that does
+                not mean it has waived its right to
+                enforce that provision later.
+                Any waiver must be made in a manner
+                permitted by applicable law.
+            </p>
+        </section>
+
+        <section id="agreement">
+            <h2>18. Entire Agreement</h2>
+
+            <p>
+                These Terms, together with the CVMatch
+                Privacy Policy and any applicable
+                subscription or service-specific terms,
+                govern use of the Platform, subject to
+                any separate agreements that may apply.
+            </p>
+
+            <p>
+                Where a specific service has additional
+                terms, those terms apply to that service
+                to the extent of any inconsistency,
+                subject to applicable law.
+            </p>
+        </section>
+
+        <section id="contact">
+            <h2>19. Contact Information</h2>
+
+            <p>
+                For questions, complaints, or requests
+                relating to these Terms, contact CVMatch
+                using the details below.
+            </p>
+
+            <div class="contact-box">
+                <strong>CVMatch</strong><br><br>
+
+                Website: https://[your-domain]<br>
+                Email: [Support Email]<br>
+                Privacy Contact: [Privacy Contact Email]<br>
+                Business/Legal Name: [Insert Legal Name]<br>
+                Address: [Insert Business Address, if applicable]
+            </div>
+        </section>
+
+        <p style="margin-top: 30px; font-weight: 600;">
+            By using CVMatch, you confirm that you have
+            read, understood, and agreed to these Terms
+            of Use.
+        </p>
+
+    </article>
+</main>
+
+<footer class="footer">
+    <p>© {% now "Y" %} CVMatch. All rights reserved.</p>
+
+    <a href="{% url 'terms_of_use' %}">Terms of Use</a>
+    <!-- Add your Privacy Policy route when it is ready -->
+</footer>
+
+</body>
+</html>

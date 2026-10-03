@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Account — CVMatch</title>
+
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <style>
+
+        :root {
+
+            --primary: #695cff;
+            --primary-dark: #5548eb;
+
+            --text: #171827;
+            --muted: #74758a;
+
+            --background: #f3f4fa;
+            --surface: #f4f5fb;
+
+            --shadow-light:
+                -8px -8px 18px rgba(255,255,255,0.95),
+                 8px  8px 20px rgba(186,190,210,0.35);
+
+            --shadow-medium:
+                -10px -10px 22px rgba(255,255,255,0.95),
+                 12px 12px 28px rgba(174,179,204,0.40);
+
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family: "Inter", sans-serif;
+
+            background: var(--background);
+
+            color: var(--text);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 25px;
+
+        }
+
+
+        .account-wrapper {
+
+            width: 100%;
+
+            max-width: 460px;
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            text-decoration: none;
+
+            color: var(--text);
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .brand-mark {
+
+            width: 42px;
+
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background: var(--primary);
+
+            color: white;
+
+            box-shadow: var(--shadow-medium);
+
+        }
+
+
+        .brand span {
+
+            color: var(--primary);
+
+        }
+
+
+        .account-card {
+
+            padding: 35px 30px;
+
+            border-radius: 28px;
+
+            background: var(--surface);
+
+            box-shadow: var(--shadow-medium);
+
+            text-align: center;
+
+        }
+
+
+        .account-icon {
+
+            width: 70px;
+
+            height: 70px;
+
+            margin: 0 auto 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 23px;
+
+            background: #eeecff;
+
+            color: var(--primary);
+
+            font-size: 27px;
+
+            box-shadow: var(--shadow-light);
+
+        }
+
+
+        h1 {
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .description {
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .account-option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            text-align: left;
+
+            padding: 18px;
+
+            margin-top: 14px;
+
+            border-radius: 18px;
+
+            text-decoration: none;
+
+            color: var(--text);
+
+            background: var(--surface);
+
+            box-shadow: var(--shadow-light);
+
+            transition: .2s ease;
+
+        }
+
+
+        .account-option:hover {
+
+            color: var(--primary);
+
+            transform: translateY(-2px);
+
+        }
+
+
+        .option-icon {
+
+            min-width: 46px;
+
+            width: 46px;
+
+            height: 46px;
+
+            border-radius: 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #eeecff;
+
+            color: var(--primary);
+
+        }
+
+
+        .option-title {
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 3px;
+
+        }
+
+
+        .option-description {
+
+            font-size: 11px;
+
+            color: var(--muted);
+
+        }
+
+
+        .option-arrow {
+
+            margin-left: auto;
+
+            color: #a0a1b0;
+
+        }
+
+
+        .back-home {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            text-decoration: none;
+
+        }
+
+
+        .back-home:hover {
+
+            color: var(--primary);
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            body {
+
+                padding: 18px;
+
+            }
+
+
+            .account-card {
+
+                padding: 30px 20px;
+
+            }
+
+
+            h1 {
+
+                font-size: 25px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="account-wrapper">
+
+
+    <a href="/" class="brand">
+
+        <div class="brand-mark">
+
+            <i class="fa-solid fa-file-lines"></i>
+
+        </div>
+
+        CV<span>Match</span>
+
+    </a>
+
+
+    <div class="account-card">
+
+
+        <div class="account-icon">
+
+            <i class="fa-regular fa-user"></i>
+
+        </div>
+
+
+        <h1>
+            Your CVMatch account
+        </h1>
+
+
+        <p class="description">
+
+            Create an account to save your CV analyses,
+            track your results and improve your applications.
+
+        </p>
+
+
+        <!-- CREATE ACCOUNT -->
+
+        <a
+            href="{% url 'register' %}"
+            class="account-option"
+        >
+
+            <div class="option-icon">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+            </div>
+
+
+            <div>
+
+                <div class="option-title">
+                    Create an account
+                </div>
+
+                <div class="option-description">
+                    New to CVMatch? Get started here.
+                </div>
+
+            </div>
+
+
+            <div class="option-arrow">
+
+                <i class="fa-solid fa-chevron-right"></i>
+
+            </div>
+
+        </a>
+
+
+        <!-- SIGN IN -->
+
+        <a
+            href="{% url 'login' %}"
+            class="account-option"
+        >
+
+            <div class="option-icon">
+
+                <i class="fa-solid fa-right-to-bracket"></i>
+
+            </div>
+
+
+            <div>
+
+                <div class="option-title">
+                    I already have an account
+                </div>
+
+                <div class="option-description">
+                    Sign in to access your account.
+                </div>
+
+            </div>
+
+
+            <div class="option-arrow">
+
+                <i class="fa-solid fa-chevron-right"></i>
+
+            </div>
+
+        </a>
+
+
+    </div>
+
+
+    <a href="/" class="back-home">
+
+        <i class="fa-solid fa-arrow-left me-1"></i>
+
+        Back to CVMatch
+
+    </a>
+
+
+</div>
+
+
+</body>
+
+</html>
