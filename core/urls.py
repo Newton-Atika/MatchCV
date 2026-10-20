@@ -128,4 +128,9 @@ urlpatterns = [
         views.paystack_webhook,
         name="paystack_webhook"
     ),
+    path(
+    "account/referrals/",
+    views.referral_dashboard,
+    name="referral_dashboard",
+),
 ]
