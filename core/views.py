@@ -67,14 +67,26 @@ def get_referral_profile(user):
     return profile
 
 
+
+from datetime import timedelta
+
+from django.db import transaction
+from django.utils import timezone
+
+from .models import ReferralProfile, ReferralReward, UserSubscription
+
+
 def award_referral_reward(referred_user):
     """
-    Grant the referrer 24 hours when a referred user
-    first successfully logs in.
+    Grant the referrer 24 hours of referral access when a referred
+    user successfully logs in.
 
-    A referred user can generate only one reward.
+    Each referred user can generate only one reward.
+    Rewards accumulate on existing active referral access.
     """
     with transaction.atomic():
+
+        # Lock the referral profile while processing the reward.
         referral_profile = (
             ReferralProfile.objects
             .select_for_update()
@@ -82,22 +94,23 @@ def award_referral_reward(referred_user):
             .first()
         )
 
-        if not referral_profile or not referral_profile.referred_by:
+        if not referral_profile or not referral_profile.referred_by_id:
             return False
 
-        referrer = referral_profile.referred_by
+        referrer_id = referral_profile.referred_by_id
 
-        if referrer.pk == referred_user.pk:
+        if referrer_id == referred_user.pk:
             return False
 
-        # Prevent duplicate rewards for the same referred user.
+        # Prevent a second reward for this referred user.
         if ReferralReward.objects.filter(
             referred_user=referred_user
         ).exists():
             return False
 
+        # Lock or create the referrer's subscription.
         subscription, _ = UserSubscription.objects.get_or_create(
-            user=referrer
+            user_id=referrer_id
         )
 
         subscription = (
@@ -107,14 +120,24 @@ def award_referral_reward(referred_user):
         )
 
         now = timezone.now()
+        current_expiry = subscription.referral_access_until
 
-        # Accumulate on existing referral access if still active.
-        start_time = subscription.referral_access_until
-
-        if start_time is None or start_time <= now:
+        # Extend active referral access; otherwise start now.
+        if current_expiry and current_expiry > now:
+            start_time = current_expiry
+        else:
             start_time = now
 
         new_expiry = start_time + timedelta(hours=24)
+
+        # Record the reward and update access in one transaction.
+        ReferralReward.objects.create(
+            referrer_id=referrer_id,
+            referred_user=referred_user,
+            hours_awarded=24,
+            awarded_at=now,
+            access_until=new_expiry,
+        )
 
         subscription.referral_access_until = new_expiry
         subscription.save(
@@ -122,14 +145,6 @@ def award_referral_reward(referred_user):
                 "referral_access_until",
                 "updated_at",
             ]
-        )
-
-        ReferralReward.objects.create(
-            referrer=referrer,
-            referred_user=referred_user,
-            hours_awarded=24,
-            awarded_at=now,
-            access_until=new_expiry,
         )
 
         return True
@@ -594,6 +609,13 @@ def register(request):
     if request.user.is_authenticated:
         return redirect("account_dashboard")
 
+    # Preserve referral code when the visitor opens the registration link.
+    if request.method == "GET":
+        referral_code = request.GET.get("ref", "").strip().upper()
+
+        if referral_code:
+            request.session["referral_code"] = referral_code
+
     if request.method == "POST":
 
         full_name = request.POST.get(
@@ -685,10 +707,11 @@ def register(request):
         # Create account
         # ----------------------------------------------------
 
-        try:
 
+        try:
             with transaction.atomic():
 
+                # Create the new user account.
                 user = User.objects.create_user(
                     username=email,
                     email=email,
@@ -696,24 +719,54 @@ def register(request):
                     first_name=full_name,
                 )
 
+                # Create the user's normal profile.
                 Profile.objects.create(
                     user=user,
                     phone=phone,
                 )
 
-                login(
-                    request,
-                    user
+                # Create or retrieve this user's referral profile.
+                new_user_referral_profile = get_referral_profile(user)
+
+                # Identify the person who referred this user.
+                referral_code = (
+                    request.POST.get("ref", "").strip().upper()
+                    or request.session.get("referral_code", "").strip().upper()
                 )
+
+                # Save the referrer against the new user.
+                if referral_code:
+                    referrer_profile = ReferralProfile.objects.filter(
+                        referral_code=referral_code
+                    ).first()
+
+                    if (
+                        referrer_profile
+                        and referrer_profile.user_id != user.id
+                    ):
+                        new_user_referral_profile.referred_by = (
+                            referrer_profile.user
+                        )
+                        new_user_referral_profile.save(
+                            update_fields=["referred_by"]
+                        )
+
+                # Automatically log in the newly registered user.
+                login(request, user)
+
+                # Award the referrer their 24 hours, if eligible.
+                reward_granted = award_referral_reward(user)
+
+                # Remove the saved code after registration.
+                request.session.pop("referral_code", None)
 
             messages.success(
                 request,
                 "Your account has been created."
             )
 
-            return redirect(
-                "account_dashboard"
-            )
+            return redirect("account_dashboard")
+
 
         except Exception as exc:
 
@@ -1401,16 +1454,15 @@ def scan_cv(request):
                 user=request.user
             )
 
-            if not subscription.has_paid_access():
-
+            if (
+                not subscription.has_paid_access()
+                and not subscription.has_referral_access()
+            ):
                 subscription.free_scan_used = True
-
+            
                 subscription.save(
-                    update_fields=[
-                        "free_scan_used"
-                    ]
+                    update_fields=["free_scan_used"]
                 )
-
         # ----------------------------------------------------
         # REDIRECT TO RESULT
         # ----------------------------------------------------
@@ -1545,7 +1597,15 @@ def rescan_scan(request, scan_id):
         user=request.user,
     )
 
+    subscription = get_user_subscription(request.user)
 
+    if not subscription.can_scan():
+        messages.warning(
+            request,
+            "Your scan access has expired. Please subscribe "
+            "or earn referral access to continue."
+        )
+    return redirect("subscription")
     # --------------------------------------------------------
     # ONLY POST IS ALLOWED
     # --------------------------------------------------------
