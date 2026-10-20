@@ -877,6 +877,12 @@
                     <i class="fa-solid fa-gauge-high"></i>
                     Dashboard
                 </a>
+            
+                <a href="{% url 'referral_dashboard' %}" class="account-link">
+                    <i class="fa-solid fa-user-plus"></i>
+                    Referrals
+                </a>
+
 
                 <form method="POST" action="{% url 'logout' %}" class="logout-form">
                     {% csrf_token %}
