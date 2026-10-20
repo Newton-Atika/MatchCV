@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CVMatch Referral Rewards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 20px;
+            background: #f7f8fc;
+            color: #202938;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 18px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 15px;
+        }
+
+        .number {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .referral-link {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin: 10px 0;
+        }
+
+        button, .back-link {
+            display: inline-block;
+            padding: 11px 16px;
+            background: #2457d6;
+            color: white;
+            border: 0;
+            border-radius: 7px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px 8px;
+            border-bottom: 1px solid #e7eaf0;
+        }
+
+        .muted {
+            color: #667085;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Referral Rewards</h1>
+    <p class="muted">
+        Invite friends to CVMatch. Each qualifying referral earns
+        you 24 hours of referral access.
+    </p>
+
+    <div class="card">
+        <h2>Your referral link</h2>
+        <p>Share this link with people who have not registered yet.</p>
+
+        <input
+            id="referralLink"
+            class="referral-link"
+            type="text"
+            readonly
+            value="{{ referral_link }}"
+        >
+
+        <button type="button" onclick="copyReferralLink()">
+            Copy referral link
+        </button>
+
+        <p id="copyMessage" class="muted"></p>
+    </div>
+
+    <div class="stats">
+        <div class="card">
+            <div class="muted">Successful referrals</div>
+            <div class="number">{{ successful_referrals }}</div>
+        </div>
+
+        <div class="card">
+            <div class="muted">Total hours earned</div>
+            <div class="number">{{ total_hours_earned }}</div>
+        </div>
+
+        <div class="card">
+            <div class="muted">Equivalent days earned</div>
+            <div class="number">{{ total_days_earned|floatformat:1 }}</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Referral access</h2>
+
+        {% if has_referral_access %}
+            <p>Your referral access is active.</p>
+            <p>
+                Access expires:
+                <strong>{{ referral_access_until|date:"d M Y, H:i" }}</strong>
+            </p>
+        {% else %}
+            <p>You do not currently have active referral access.</p>
+            <p class="muted">
+                Your earned hours are recorded in the reward history below.
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h2>Reward history</h2>
+
+        {% if rewards %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Referral</th>
+                        <th>Hours earned</th>
+                        <th>Reward expiry</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reward in rewards %}
+                        <tr>
+                            <td>{{ reward.awarded_at|date:"d M Y, H:i" }}</td>
+                            <td>{{ reward.referred_user.first_name|default:reward.referred_user.username }}</td>
+                            <td>{{ reward.hours_awarded }}</td>
+                            <td>{{ reward.access_until|date:"d M Y, H:i" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="muted">
+                No successful referrals yet. Share your link to get started.
+            </p>
+        {% endif %}
+    </div>
+
+    <p>
+        <a class="back-link" href="{% url 'account_dashboard' %}">
+            Back to dashboard
+        </a>
+    </p>
+
+    <script>
+        function copyReferralLink() {
+            const field = document.getElementById("referralLink");
+            const message = document.getElementById("copyMessage");
+
+            field.select();
+            field.setSelectionRange(0, 99999);
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(field.value)
+                    .then(() => {
+                        message.textContent = "Referral link copied.";
+                    })
+                    .catch(() => {
+                        message.textContent =
+                            "Please copy the selected link manually.";
+                    });
+            } else {
+                const copied = document.execCommand("copy");
+                message.textContent = copied
+                    ? "Referral link copied."
+                    : "Please copy the selected link manually.";
+            }
+        }
+    </script>
+
+</body>
+</html>
