@@ -96,6 +96,8 @@ class UserSubscription(models.Model):
     )
 
     active_until = models.DateTimeField(null=True, blank=True)
+    
+    referral_access_until = models.DateTimeField(null=True,blank=True)
 
     last_payment_reference = models.CharField(
         max_length=255,
@@ -134,6 +136,19 @@ class UserSubscription(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.status}"
+
+    def has_referral_access(self):
+        return (
+            self.referral_access_until is not None
+            and self.referral_access_until > timezone.now()
+        )
+
+    def can_scan(self):
+        return (
+            self.has_paid_access()
+            or self.has_referral_access()
+            or not self.free_scan_used
+        )
 
 
 class PaymentTransaction(models.Model):
