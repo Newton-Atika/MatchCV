@@ -12,17 +12,23 @@ from .models import CVScan, Profile
 from .matching_engine import analyze_cv_against_job
 
 
+from datetime import timedelta
 
+from django.db import transaction
+from django.urls import reverse
+from django.utils import timezone
+
+from .models import (
+    ReferralProfile,
+    ReferralReward,
+    UserSubscription,
+)
 
 
 import json
 import logging
 import uuid
 
-
-import json
-import logging
-import uuid
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -49,6 +55,84 @@ from .payments import (
 
 logger = logging.getLogger(__name__)
 
+
+def get_referral_profile(user):
+    """Return the user's referral profile, creating it if needed."""
+    profile, _ = ReferralProfile.objects.get_or_create(
+        user=user,
+        defaults={
+            "referral_code": uuid.uuid4().hex[:12].upper()
+        },
+    )
+    return profile
+
+
+def award_referral_reward(referred_user):
+    """
+    Grant the referrer 24 hours when a referred user
+    first successfully logs in.
+
+    A referred user can generate only one reward.
+    """
+    with transaction.atomic():
+        referral_profile = (
+            ReferralProfile.objects
+            .select_for_update()
+            .filter(user=referred_user)
+            .first()
+        )
+
+        if not referral_profile or not referral_profile.referred_by:
+            return False
+
+        referrer = referral_profile.referred_by
+
+        if referrer.pk == referred_user.pk:
+            return False
+
+        # Prevent duplicate rewards for the same referred user.
+        if ReferralReward.objects.filter(
+            referred_user=referred_user
+        ).exists():
+            return False
+
+        subscription, _ = UserSubscription.objects.get_or_create(
+            user=referrer
+        )
+
+        subscription = (
+            UserSubscription.objects
+            .select_for_update()
+            .get(pk=subscription.pk)
+        )
+
+        now = timezone.now()
+
+        # Accumulate on existing referral access if still active.
+        start_time = subscription.referral_access_until
+
+        if start_time is None or start_time <= now:
+            start_time = now
+
+        new_expiry = start_time + timedelta(hours=24)
+
+        subscription.referral_access_until = new_expiry
+        subscription.save(
+            update_fields=[
+                "referral_access_until",
+                "updated_at",
+            ]
+        )
+
+        ReferralReward.objects.create(
+            referrer=referrer,
+            referred_user=referred_user,
+            hours_awarded=24,
+            awarded_at=now,
+            access_until=new_expiry,
+        )
+
+        return True
 
 def get_user_subscription(user):
     subscription, _ = UserSubscription.objects.get_or_create(user=user)
@@ -421,6 +505,13 @@ def login_view(request):
     if request.user.is_authenticated:
         return redirect(settings.LOGIN_REDIRECT_URL)
 
+    # Preserve a referral code when a visitor opens a referral link.
+    if request.method == "GET":
+        referral_code = request.GET.get("ref", "").strip().upper()
+    
+        if referral_code:
+            request.session["referral_code"] = referral_code
+
     if request.method == "POST":
         email = request.POST.get("email", "").strip()
         password = request.POST.get("password", "")
@@ -453,6 +544,17 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
+        
+            # Award the referral reward only if it has not already
+            # been granted for this referred user.
+            reward_granted = award_referral_reward(user)
+        
+            if reward_granted:
+                messages.success(
+                    request,
+                    "A referral reward of 24 hours of free CV scans "
+                    "has been added to your referrer's account."
+                )
 
             next_url = request.POST.get("next") or request.GET.get("next")
 
@@ -629,6 +731,52 @@ def register(request):
         "core/register.html"
     )
 
+
+from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
+
+
+@login_required
+def referral_dashboard(request):
+    profile = get_referral_profile(request.user)
+
+    referral_link = request.build_absolute_uri(
+        reverse("register")
+    ) + f"?ref={profile.referral_code}"
+
+    rewards = (
+        ReferralReward.objects
+        .filter(referrer=request.user)
+        .select_related("referred_user")
+        .order_by("-awarded_at")
+    )
+
+    successful_referrals = rewards.count()
+
+    total_hours_earned = (
+        rewards.aggregate(
+            total=Sum("hours_awarded")
+        )["total"] or 0
+    )
+
+    subscription = get_user_subscription(request.user)
+
+    context = {
+        "referral_profile": profile,
+        "referral_link": referral_link,
+        "rewards": rewards,
+        "successful_referrals": successful_referrals,
+        "total_hours_earned": total_hours_earned,
+        "total_days_earned": total_hours_earned / 24,
+        "referral_access_until": subscription.referral_access_until,
+        "has_referral_access": subscription.has_referral_access(),
+    }
+
+    return render(
+        request,
+        "core/referral_dashboard.html",
+        context,
+    )
 
 # ============================================================
 # DASHBOARD
