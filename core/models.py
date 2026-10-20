@@ -8,6 +8,74 @@ from django.db import models
 from django.utils import timezone
 
 
+import uuid
+
+from django.conf import settings
+from django.db import models
+from django.utils import timezone
+
+
+class ReferralProfile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="referral_profile",
+    )
+
+    referral_code = models.CharField(
+        max_length=32,
+        unique=True,
+        db_index=True,
+    )
+
+    referred_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="referred_users",
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.referral_code:
+            self.referral_code = uuid.uuid4().hex[:12].upper()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user} - {self.referral_code}"
+
+
+class ReferralReward(models.Model):
+    referrer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="referral_rewards",
+    )
+
+    referred_user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="referral_reward",
+    )
+
+    hours_awarded = models.PositiveSmallIntegerField(default=24)
+
+    awarded_at = models.DateTimeField(default=timezone.now)
+
+    access_until = models.DateTimeField()
+
+    class Meta:
+        ordering = ["-awarded_at"]
+
+    def __str__(self):
+        return (
+            f"{self.referrer} earned {self.hours_awarded} hours "
+            f"for referring {self.referred_user}"
+        )
+
+
 class UserSubscription(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
