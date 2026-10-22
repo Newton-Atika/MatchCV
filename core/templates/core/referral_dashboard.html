@@ -1,197 +1,1036 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CVMatch Referral Rewards</title>
+    <meta name="theme-color" content="#f7f8fc">
+    <title>Refer & Earn | CVMatch</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <style>
+        :root {
+            --primary: #6558e8;
+            --primary-dark: #5042d3;
+            --primary-soft: #f0efff;
+            --ink: #20213a;
+            --muted: #777c95;
+            --line: #e9eaf2;
+            --surface: #ffffff;
+            --bg: #f7f8fc;
+            --green: #11835d;
+            --green-soft: #e9f8f0;
+            --amber: #a66b0a;
+            --amber-soft: #fff5df;
+            --shadow: 0 12px 35px rgba(31, 34, 70, .055);
+            --radius: 20px;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 35px auto;
-            padding: 20px;
-            background: #f7f8fc;
-            color: #202938;
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: "Inter", sans-serif;
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button, input { font: inherit; }
+        button, a { -webkit-tap-highlight-color: transparent; }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: rgba(255,255,255,.92);
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(16px);
+        }
+
+        .topbar-inner {
+            max-width: 1180px;
+            min-height: 72px;
+            margin: auto;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -1.2px;
+        }
+
+        .brand span { color: var(--primary); }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 40px;
+            padding: 0 14px;
+            border-radius: 11px;
+            font-size: 12px;
+            font-weight: 700;
+            transition: .2s ease;
+        }
+
+        .nav-link:hover { background: var(--primary-soft); color: var(--primary); }
+
+        .nav-link.primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-link.primary:hover { background: var(--primary-dark); }
+
+        .page {
+            max-width: 1180px;
+            margin: auto;
+            padding: 34px 28px 60px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--muted);
+            font-size: 11px;
+            margin-bottom: 22px;
+        }
+
+        .breadcrumb a:hover { color: var(--primary); }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 36px;
+            border-radius: 26px;
+            color: white;
+            background: linear-gradient(118deg, #5143d2 0%, #7163ef 58%, #9585ff 100%);
+            box-shadow: 0 18px 45px rgba(101, 88, 232, .20);
+            margin-bottom: 24px;
+        }
+
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(255,255,255,.16);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero::before {
+            width: 300px;
+            height: 300px;
+            right: -70px;
+            top: -180px;
+        }
+
+        .hero::after {
+            width: 220px;
+            height: 220px;
+            right: 45px;
+            bottom: -170px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 720px;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 11px;
+            border-radius: 30px;
+            background: rgba(255,255,255,.14);
+            border: 1px solid rgba(255,255,255,.19);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            max-width: 680px;
+            font-size: clamp(30px, 4.5vw, 44px);
+            line-height: 1.12;
+            letter-spacing: -1.8px;
+            font-weight: 800;
+        }
+
+        .hero p {
+            max-width: 560px;
+            margin: 15px 0 0;
+            color: rgba(255,255,255,.84);
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .hero-points {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-top: 24px;
+        }
+
+        .hero-point {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,.95);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .hero-point i { color: #c6ffdf; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 17px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 23px;
+            box-shadow: var(--shadow);
+            min-width: 0;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .stat-icon {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            border-radius: 13px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .stat-icon.green { background: var(--green-soft); color: var(--green); }
+        .stat-icon.amber { background: var(--amber-soft); color: var(--amber); }
+
+        .stat-value {
+            font-size: clamp(26px, 3vw, 34px);
+            font-weight: 800;
+            letter-spacing: -1.3px;
+            overflow-wrap: anywhere;
+        }
+
+        .stat-foot {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+            gap: 22px;
+            align-items: stretch;
+            margin-bottom: 24px;
         }
 
         .card {
-            background: white;
-            border-radius: 12px;
-            padding: 22px;
-            margin-bottom: 18px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+            min-width: 0;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 15px;
+        .card-header {
+            padding: 23px 25px;
+            border-bottom: 1px solid var(--line);
         }
 
-        .number {
-            font-size: 28px;
-            font-weight: bold;
-            margin-top: 10px;
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: -.3px;
+        }
+
+        .card-title i { color: var(--primary); }
+
+        .card-description {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .card-body { padding: 25px; }
+
+        .link-label {
+            display: block;
+            color: #4b5068;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .link-field {
+            display: flex;
+            align-items: stretch;
+            gap: 9px;
         }
 
         .referral-link {
             width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            margin: 10px 0;
+            min-width: 0;
+            height: 48px;
+            padding: 0 13px;
+            border: 1px solid #dedcf8;
+            border-radius: 11px;
+            background: #fafaff;
+            color: #555b75;
+            outline: none;
+            font-size: 11px;
         }
 
-        button, .back-link {
-            display: inline-block;
-            padding: 11px 16px;
-            background: #2457d6;
-            color: white;
-            border: 0;
-            border-radius: 7px;
-            text-decoration: none;
-            cursor: pointer;
+        .referral-link:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(101,88,232,.1);
         }
+
+        .btn {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 0 16px;
+            border: 0;
+            border-radius: 11px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 800;
+            transition: transform .18s ease, background .18s ease;
+            white-space: nowrap;
+        }
+
+        .btn:hover { transform: translateY(-1px); }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-soft { background: var(--primary-soft); color: var(--primary); }
+        .btn-soft:hover { background: #e6e3ff; }
+
+        .share-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 13px;
+        }
+
+        .share-buttons .btn { min-height: 39px; }
+
+        .whatsapp { background: #e9f8ef; color: #12804b; }
+        .whatsapp:hover { background: #d8f2e2; }
+
+        .copy-message {
+            min-height: 17px;
+            margin: 10px 0 0;
+            color: var(--green);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .reward-callout {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-top: 23px;
+            padding: 17px;
+            border-radius: 14px;
+            background: #f6f5ff;
+            border: 1px solid #e9e6ff;
+        }
+
+        .reward-callout-icon {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: white;
+            color: var(--primary);
+        }
+
+        .reward-callout strong {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .reward-callout p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        .access-body { padding: 25px; }
+
+        .access-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            border-radius: 14px;
+            background: var(--green-soft);
+            color: var(--green);
+            margin-bottom: 22px;
+        }
+
+        .access-status.inactive {
+            background: #f4f5f9;
+            color: #73788e;
+        }
+
+        .status-icon {
+            display: grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            background: rgba(255,255,255,.8);
+            border-radius: 12px;
+        }
+
+        .status-title { font-size: 12px; font-weight: 800; }
+        .status-subtitle { font-size: 10px; margin-top: 5px; opacity: .85; line-height: 1.6; }
+
+        .access-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .access-detail:last-child { border-bottom: 0; padding-bottom: 0; }
+
+        .access-detail span {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .access-detail strong {
+            text-align: right;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .how-section { margin-bottom: 24px; }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: -.6px;
+        }
+
+        .section-heading p {
+            margin: 7px 0 0;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .step {
+            padding: 22px;
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: 17px;
+            box-shadow: var(--shadow);
+        }
+
+        .step-number {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            margin-bottom: 17px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        .step h3 { margin: 0 0 8px; font-size: 12px; font-weight: 800; }
+
+        .step p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        .history-card { margin-bottom: 25px; }
+
+        .history-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 23px 25px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .history-count {
+            padding: 7px 10px;
+            border-radius: 30px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-size: 10px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .table-wrap { overflow-x: auto; }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 650px;
         }
 
-        th, td {
+        th {
+            padding: 14px 22px;
+            background: #fafaff;
+            color: var(--muted);
             text-align: left;
-            padding: 12px 8px;
-            border-bottom: 1px solid #e7eaf0;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
         }
 
-        .muted {
-            color: #667085;
+        td {
+            padding: 17px 22px;
+            border-bottom: 1px solid #f0f1f6;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        tbody tr:last-child td { border-bottom: 0; }
+        tbody tr:hover { background: #fcfcff; }
+
+        .person-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .person-avatar {
+            display: grid;
+            place-items: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .reward-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 9px;
+            border-radius: 30px;
+            background: var(--green-soft);
+            color: var(--green);
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .empty-state {
+            padding: 45px 22px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            display: grid;
+            place-items: center;
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 16px;
+            border-radius: 18px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-size: 21px;
+        }
+
+        .empty-state h3 { margin: 0 0 8px; font-size: 14px; }
+        .empty-state p {
+            max-width: 370px;
+            margin: 0 auto 18px;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            color: #9296a9;
+            font-size: 10px;
+        }
+
+        .footer a { color: var(--muted); font-weight: 700; }
+        .footer a:hover { color: var(--primary); }
+
+        @media (max-width: 850px) {
+            .main-grid { grid-template-columns: 1fr; }
+            .stats-grid { gap: 12px; }
+            .stat-card { padding: 19px; }
+        }
+
+        @media (max-width: 600px) {
+            .topbar-inner { min-height: 64px; padding: 0 17px; }
+            .brand { font-size: 22px; }
+            .top-actions { gap: 3px; }
+            .nav-link { padding: 0 10px; font-size: 10px; }
+            .nav-link i { display: none; }
+
+            .page { padding: 24px 15px 35px; }
+            .hero { padding: 27px 22px; border-radius: 21px; }
+            .hero h1 { font-size: 32px; letter-spacing: -1.2px; }
+            .hero p { font-size: 12px; }
+            .hero-points { gap: 12px; flex-direction: column; }
+
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .stat-card:last-child { grid-column: 1 / -1; }
+            .stat-value { font-size: 27px; }
+
+            .card-header, .history-header { padding: 20px; }
+            .card-body, .access-body { padding: 20px; }
+
+            .link-field { flex-direction: column; }
+            .link-field .btn { width: 100%; }
+            .share-buttons .btn { flex: 1; }
+
+            .steps-grid { grid-template-columns: 1fr; }
+            .step { display: flex; gap: 14px; align-items: flex-start; }
+            .step-number { margin: 0; flex-shrink: 0; }
+
+            .section-heading { align-items: flex-start; flex-direction: column; }
+            .footer { align-items: flex-start; flex-direction: column; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+            }
         }
     </style>
 </head>
+
 <body>
+<header class="topbar">
+    <div class="topbar-inner">
+        <a href="{% url 'landing' %}" class="brand">CV<span>Match</span></a>
 
-    <h1>Referral Rewards</h1>
-    <p class="muted">
-        Invite friends to CVMatch. Each qualifying referral earns
-        you 24 hours of referral access.
-    </p>
+        <nav class="top-actions" aria-label="Account navigation">
+            <a href="{% url 'account_dashboard' %}" class="nav-link">
+                <i class="fa-solid fa-gauge-high"></i> Dashboard
+            </a>
+            <a href="{% url 'scan_cv' %}" class="nav-link primary">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Scan a CV
+            </a>
+        </nav>
+    </div>
+</header>
 
-    <div class="card">
-        <h2>Your referral link</h2>
-        <p>Share this link with people who have not registered yet.</p>
-
-        <input
-            id="referralLink"
-            class="referral-link"
-            type="text"
-            readonly
-            value="{{ referral_link }}"
-        >
-
-        <button type="button" onclick="copyReferralLink()">
-            Copy referral link
-        </button>
-
-        <p id="copyMessage" class="muted"></p>
+<main class="page">
+    <div class="breadcrumb">
+        <a href="{% url 'account_dashboard' %}">My account</a>
+        <i class="fa-solid fa-chevron-right" style="font-size:8px"></i>
+        <span>Refer & Earn</span>
     </div>
 
-    <div class="stats">
-        <div class="card">
-            <div class="muted">Successful referrals</div>
-            <div class="number">{{ successful_referrals }}</div>
-        </div>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-label">
+                <i class="fa-solid fa-gift"></i>
+                CVMatch referral rewards
+            </div>
 
-        <div class="card">
-            <div class="muted">Total hours earned</div>
-            <div class="number">{{ total_hours_earned }}</div>
-        </div>
+            <h1>Share CVMatch.<br>Earn more time to scan.</h1>
 
-        <div class="card">
-            <div class="muted">Equivalent days earned</div>
-            <div class="number">{{ total_days_earned|floatformat:1 }}</div>
-        </div>
-    </div>
-
-    <div class="card">
-        <h2>Referral access</h2>
-
-        {% if has_referral_access %}
-            <p>Your referral access is active.</p>
             <p>
-                Access expires:
-                <strong>{{ referral_access_until|date:"d M Y, H:i" }}</strong>
+                Know someone preparing for their next opportunity?
+                Invite them to try CVMatch. When a new user registers
+                through your referral link, you earn 24 hours of referral access.
             </p>
-        {% else %}
-            <p>You do not currently have active referral access.</p>
-            <p class="muted">
-                Your earned hours are recorded in the reward history below.
-            </p>
-        {% endif %}
-    </div>
 
-    <div class="card">
-        <h2>Reward history</h2>
+            <div class="hero-points">
+                <div class="hero-point"><i class="fa-solid fa-circle-check"></i> 24 hours per qualifying referral</div>
+                <div class="hero-point"><i class="fa-solid fa-circle-check"></i> Rewards can accumulate</div>
+                <div class="hero-point"><i class="fa-solid fa-circle-check"></i> Track rewards in one place</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-grid" aria-label="Referral statistics">
+        <div class="stat-card">
+            <div class="stat-top">
+                <span class="stat-label">Successful referrals</span>
+                <div class="stat-icon"><i class="fa-solid fa-user-check"></i></div>
+            </div>
+            <div class="stat-value">{{ successful_referrals|default:0 }}</div>
+            <div class="stat-foot">People whose referral rewards were recorded</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <span class="stat-label">Total hours earned</span>
+                <div class="stat-icon green"><i class="fa-solid fa-clock"></i></div>
+            </div>
+            <div class="stat-value">{{ total_hours_earned|default:0 }}</div>
+            <div class="stat-foot">Total referral hours credited to your account</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                <span class="stat-label">Equivalent days earned</span>
+                <div class="stat-icon amber"><i class="fa-solid fa-calendar-check"></i></div>
+            </div>
+            <div class="stat-value">{{ total_days_earned|default:0|floatformat:1 }}</div>
+            <div class="stat-foot">A summary of your referral rewards, not necessarily your remaining time</div>
+        </div>
+    </section>
+
+    <section class="main-grid">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fa-solid fa-link"></i> Your personal referral link</h2>
+                <p class="card-description">
+                    Share this unique link with people who have not registered for CVMatch yet.
+                </p>
+            </div>
+
+            <div class="card-body">
+                <label class="link-label" for="referralLink">YOUR REFERRAL URL</label>
+
+                <div class="link-field">
+                    <input
+                        id="referralLink"
+                        class="referral-link"
+                        type="text"
+                        readonly
+                        value="{{ referral_link }}"
+                        aria-label="Your referral link"
+                    >
+                    <button type="button" class="btn btn-primary" id="copyButton" onclick="copyReferralLink()">
+                        <i class="fa-regular fa-copy"></i> Copy link
+                    </button>
+                </div>
+
+                <div class="share-buttons">
+                    <button type="button" class="btn whatsapp" onclick="shareWhatsApp()">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                    </button>
+                    <button type="button" class="btn btn-soft" onclick="shareLink()">
+                        <i class="fa-solid fa-share-nodes"></i> Share link
+                    </button>
+                </div>
+
+                <p id="copyMessage" class="copy-message" role="status" aria-live="polite"></p>
+
+                <div class="reward-callout">
+                    <div class="reward-callout-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <div>
+                        <strong>How you earn</strong>
+                        <p>
+                            Each eligible new user who registers using your referral link can earn
+                            you 24 hours of referral access. Additional qualifying referrals add
+                            more time to your referral-access period.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fa-solid fa-hourglass-half"></i> Your referral access</h2>
+                <p class="card-description">Check whether your earned referral access is currently available.</p>
+            </div>
+
+            <div class="access-body">
+                {% if has_referral_access %}
+                    <div class="access-status">
+                        <div class="status-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div>
+                            <div class="status-title">Referral access is active</div>
+                            <div class="status-subtitle">You can use your active referral access to scan CVs.</div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="access-status inactive">
+                        <div class="status-icon"><i class="fa-solid fa-clock"></i></div>
+                        <div>
+                            <div class="status-title">No active referral access</div>
+                            <div class="status-subtitle">Share your link to earn more referral time.</div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="access-detail">
+                    <span>Access expiry</span>
+                    <strong>
+                        {% if referral_access_until %}
+                            {{ referral_access_until|date:"d M Y, H:i" }}
+                        {% else %}
+                            Not available
+                        {% endif %}
+                    </strong>
+                </div>
+
+                <div class="access-detail">
+                    <span>Referral rewards earned</span>
+                    <strong>{{ total_hours_earned|default:0 }} hours</strong>
+                </div>
+
+                <div class="access-detail">
+                    <span>Reward per qualifying referral</span>
+                    <strong>24 hours</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-section">
+        <div class="section-heading">
+            <div>
+                <h2>How it works</h2>
+                <p>Three simple steps to earn referral access.</p>
+            </div>
+        </div>
+
+        <div class="steps-grid">
+            <article class="step">
+                <div class="step-number">01</div>
+                <div>
+                    <h3>Copy your link</h3>
+                    <p>Use the copy button to get your personal CVMatch referral URL.</p>
+                </div>
+            </article>
+
+            <article class="step">
+                <div class="step-number">02</div>
+                <div>
+                    <h3>Share with someone</h3>
+                    <p>Send the link to a friend or job seeker who has not registered yet.</p>
+                </div>
+            </article>
+
+            <article class="step">
+                <div class="step-number">03</div>
+                <div>
+                    <h3>Earn referral time</h3>
+                    <p>When an eligible new user registers through your link, 24 hours of referral access is credited to you.</p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="card history-card">
+        <div class="history-header">
+            <div>
+                <h2 class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Referral reward history</h2>
+                <p class="card-description">Review the referrals credited to your account.</p>
+            </div>
+            <span class="history-count">{{ successful_referrals|default:0 }} rewards</span>
+        </div>
 
         {% if rewards %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Referral</th>
-                        <th>Hours earned</th>
-                        <th>Reward expiry</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for reward in rewards %}
+            <div class="table-wrap">
+                <table>
+                    <thead>
                         <tr>
-                            <td>{{ reward.awarded_at|date:"d M Y, H:i" }}</td>
-                            <td>{{ reward.referred_user.first_name|default:reward.referred_user.username }}</td>
-                            <td>{{ reward.hours_awarded }}</td>
-                            <td>{{ reward.access_until|date:"d M Y, H:i" }}</td>
+                            <th>REFERRED USER</th>
+                            <th>REGISTRATION REWARD DATE</th>
+                            <th>TIME EARNED</th>
+                            <th>REWARD EXPIRY</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for reward in rewards %}
+                            <tr>
+                                <td>
+                                    <div class="person-cell">
+                                        <div class="person-avatar">
+                                            <i class="fa-solid fa-user"></i>
+                                        </div>
+                                        <span>{{ reward.referred_user.first_name|default:reward.referred_user.username }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ reward.awarded_at|date:"d M Y, H:i" }}</td>
+                                <td><span class="reward-pill"><i class="fa-solid fa-plus"></i> {{ reward.hours_awarded }} hours</span></td>
+                                <td>{{ reward.access_until|date:"d M Y, H:i" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         {% else %}
-            <p class="muted">
-                No successful referrals yet. Share your link to get started.
-            </p>
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fa-solid fa-paper-plane"></i></div>
+                <h3>Your referral journey starts here</h3>
+                <p>
+                    You have not earned a referral reward yet. Share your personal link
+                    with someone who could benefit from CVMatch.
+                </p>
+                <button type="button" class="btn btn-primary" onclick="copyReferralLink()">
+                    <i class="fa-solid fa-link"></i> Copy my referral link
+                </button>
+            </div>
         {% endif %}
-    </div>
+    </section>
 
-    <p>
-        <a class="back-link" href="{% url 'account_dashboard' %}">
-            Back to dashboard
-        </a>
-    </p>
+    <footer class="footer">
+        <span>© {% now "Y" %} CVMatch. All rights reserved.</span>
+        <a href="{% url 'account_dashboard' %}"><i class="fa-solid fa-arrow-left"></i> Back to dashboard</a>
+    </footer>
+</main>
 
-    <script>
-        function copyReferralLink() {
-            const field = document.getElementById("referralLink");
-            const message = document.getElementById("copyMessage");
+<script>
+    const referralField = document.getElementById("referralLink");
+    const copyMessage = document.getElementById("copyMessage");
+    const copyButton = document.getElementById("copyButton");
 
-            field.select();
-            field.setSelectionRange(0, 99999);
+    async function copyReferralLink() {
+        const link = referralField.value;
 
+        try {
             if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(field.value)
-                    .then(() => {
-                        message.textContent = "Referral link copied.";
-                    })
-                    .catch(() => {
-                        message.textContent =
-                            "Please copy the selected link manually.";
-                    });
+                await navigator.clipboard.writeText(link);
             } else {
-                const copied = document.execCommand("copy");
-                message.textContent = copied
-                    ? "Referral link copied."
-                    : "Please copy the selected link manually.";
-            }
-        }
-    </script>
+                referralField.focus();
+                referralField.select();
+                referralField.setSelectionRange(0, link.length);
 
+                const copied = document.execCommand("copy");
+                if (!copied) throw new Error("Copy failed");
+            }
+
+            copyMessage.textContent = "Your referral link has been copied.";
+            if (copyButton) {
+                copyButton.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                window.setTimeout(() => {
+                    copyButton.innerHTML = '<i class="fa-regular fa-copy"></i> Copy link';
+                }, 1800);
+            }
+        } catch (error) {
+            referralField.focus();
+            referralField.select();
+            copyMessage.textContent = "Select the link above and copy it manually.";
+        }
+    }
+
+    function shareWhatsApp() {
+        const link = referralField.value;
+        const message = "Try CVMatch to compare your CV against a job description and identify skills you may need to strengthen: " + link;
+        window.open(
+            "https://wa.me/?text=" + encodeURIComponent(message),
+            "_blank",
+            "noopener,noreferrer"
+        );
+    }
+
+    async function shareLink() {
+        const link = referralField.value;
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: "Join CVMatch",
+                    text: "Try CVMatch to review how your CV matches a job description.",
+                    url: link
+                });
+            } catch (error) {
+                if (error.name !== "AbortError") {
+                    await copyReferralLink();
+                }
+            }
+        } else {
+            await copyReferralLink();
+        }
+    }
+</script>
 </body>
 </html>
