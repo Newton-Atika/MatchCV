@@ -1571,6 +1571,7 @@ def scan_history(request):
 # It does NOT require a new CV upload.
 # ============================================================
 
+
 def rescan_scan(request, scan_id):
 
     # --------------------------------------------------------
@@ -1578,16 +1579,11 @@ def rescan_scan(request, scan_id):
     # --------------------------------------------------------
 
     if not request.user.is_authenticated:
-
-        return redirect(
-            "account"
-        )
-
+        return redirect("account")
 
     # --------------------------------------------------------
     # GET EXISTING SCAN
     #
-    # IMPORTANT:
     # Only allow the owner of the scan to edit it.
     # --------------------------------------------------------
 
@@ -1597,6 +1593,14 @@ def rescan_scan(request, scan_id):
         user=request.user,
     )
 
+    # --------------------------------------------------------
+    # CHECK SCAN ACCESS
+    #
+    # Allow scanning if the user has an active subscription,
+    # referral access, or any other access permitted by
+    # UserSubscription.can_scan().
+    # --------------------------------------------------------
+
     subscription = get_user_subscription(request.user)
 
     if not subscription.can_scan():
@@ -1605,18 +1609,21 @@ def rescan_scan(request, scan_id):
             "Your scan access has expired. Please subscribe "
             "or earn referral access to continue."
         )
-    return redirect("subscription")
+        return redirect("subscription")
+
+    # IMPORTANT:
+    # The redirect above must remain INSIDE the if statement.
+    # Otherwise, every user is redirected to subscriptions.
+
     # --------------------------------------------------------
-    # ONLY POST IS ALLOWED
+    # ONLY POST IS ALLOWED FOR RESCANNING
     # --------------------------------------------------------
 
     if request.method != "POST":
-
         return redirect(
             "scan_result",
             scan_id=scan.id,
         )
-
 
     # --------------------------------------------------------
     # GET EDITED JOB DESCRIPTION
@@ -1632,29 +1639,16 @@ def rescan_scan(request, scan_id):
         .strip()
     )
 
-
     if submitted_job_description:
-
-        new_job_description = (
-            submitted_job_description
-        )
-
+        new_job_description = submitted_job_description
     else:
-
-        new_job_description = (
-            scan.job_description
-        )
-
+        new_job_description = scan.job_description
 
     # --------------------------------------------------------
     # GET EDITED CV TEXT
     #
-    # This is the important part.
-    #
-    # The user can edit the extracted CV directly in the
-    # textarea. We use that text directly.
-    #
-    # NO FILE IS REQUIRED.
+    # The user can edit the extracted CV directly.
+    # No file upload is required.
     # --------------------------------------------------------
 
     submitted_cv_text = (
@@ -1665,26 +1659,16 @@ def rescan_scan(request, scan_id):
         .strip()
     )
 
-
     # --------------------------------------------------------
     # OPTIONAL NEW FILE
     #
-    # A user may still upload a completely different CV.
-    # But this is OPTIONAL.
-    #
     # Priority:
-    #
     # 1. Uploaded file, if supplied
     # 2. Edited CV text
     # 3. Existing stored CV text
     # --------------------------------------------------------
 
-    uploaded_cv = (
-        request.FILES.get(
-            "cv_file"
-        )
-    )
-
+    uploaded_cv = request.FILES.get("cv_file")
 
     try:
 
@@ -1694,94 +1678,49 @@ def rescan_scan(request, scan_id):
 
         if uploaded_cv:
 
-            # -----------------------------------------------
             # A genuinely new CV file was uploaded.
-            # -----------------------------------------------
-
-            new_cv_text = (
-                extract_cv_text(
-                    uploaded_cv
-                )
-            )
-
-            new_cv_filename = (
-                uploaded_cv.name
-            )
+            new_cv_text = extract_cv_text(uploaded_cv)
+            new_cv_filename = uploaded_cv.name
 
         elif submitted_cv_text:
 
-            # -----------------------------------------------
             # User edited the existing CV directly.
-            #
-            # No upload required.
-            # -----------------------------------------------
-
-            new_cv_text = (
-                submitted_cv_text
-            )
-
-            # Keep the original filename as a reference.
-            new_cv_filename = (
-                scan.cv_filename
-            )
+            new_cv_text = submitted_cv_text
+            new_cv_filename = scan.cv_filename
 
         else:
 
-            # -----------------------------------------------
             # Nothing was changed in the CV.
-            #
-            # Keep the existing CV.
-            # -----------------------------------------------
-
-            new_cv_text = (
-                scan.cv_text
-            )
-
-            new_cv_filename = (
-                scan.cv_filename
-            )
-
+            new_cv_text = scan.cv_text
+            new_cv_filename = scan.cv_filename
 
         # ====================================================
         # VALIDATE CV
         # ====================================================
 
         if not new_cv_text:
-
             raise ValueError(
                 "CV text is empty. Please edit your CV or upload a CV."
             )
 
-
-        new_cv_text = (
-            new_cv_text.strip()
-        )
-
+        new_cv_text = new_cv_text.strip()
 
         # ====================================================
         # VALIDATE JOB DESCRIPTION
         # ====================================================
 
         if not new_job_description:
-
             raise ValueError(
                 "Job description cannot be empty."
             )
 
-
-        new_job_description = (
-            new_job_description.strip()
-        )
-
+        new_job_description = new_job_description.strip()
 
         # ====================================================
         # MARK AS PROCESSING
         # ====================================================
 
-        scan.status = (
-            "processing"
-        )
-
+        scan.status = "processing"
         scan.error_message = ""
 
         scan.save(
@@ -1792,72 +1731,41 @@ def rescan_scan(request, scan_id):
             ]
         )
 
-
         # ====================================================
-        # RUN YOUR EXISTING MATCHING ENGINE
+        # RUN THE EXISTING MATCHING ENGINE
         #
-        # We are NOT changing the matching engine here.
+        # The matching engine remains unchanged.
         # ====================================================
 
-        analysis = (
-            analyze_cv_against_job(
-                new_cv_text,
-                new_job_description,
-            )
+        analysis = analyze_cv_against_job(
+            new_cv_text,
+            new_job_description,
         )
-
 
         # ====================================================
         # UPDATE THE SAME DATABASE RECORD
         # ====================================================
 
-        scan.cv_filename = (
-            new_cv_filename
-        )
+        scan.cv_filename = new_cv_filename
+        scan.cv_text = new_cv_text
+        scan.job_description = new_job_description
 
-        scan.cv_text = (
-            new_cv_text
-        )
-
-        scan.job_description = (
-            new_job_description
-        )
-
-        scan.match_score = (
-            analysis.get(
-                "match_score"
-            )
-        )
-
+        scan.match_score = analysis.get("match_score")
 
         # ----------------------------------------------------
         # BACKWARD-COMPATIBILITY FIELDS
         # ----------------------------------------------------
 
         scan.matched_keywords = [
-            item.get(
-                "term",
-                ""
-            )
-
-            for item in analysis.get(
-                "terms",
-                []
-            )
-
-            if item.get(
-                "status"
-            ) == "COVERED"
+            item.get("term", "")
+            for item in analysis.get("terms", [])
+            if item.get("status") == "COVERED"
         ]
 
-
-        scan.missing_keywords = (
-            analysis.get(
-                "missing_terms",
-                []
-            )
+        scan.missing_keywords = analysis.get(
+            "missing_terms",
+            []
         )
-
 
         scan.total_keywords = (
             analysis.get(
@@ -1869,7 +1777,6 @@ def rescan_scan(request, scan_id):
             )
         )
 
-
         scan.matched_keyword_count = (
             analysis.get(
                 "counts",
@@ -1880,25 +1787,12 @@ def rescan_scan(request, scan_id):
             )
         )
 
-
         # ----------------------------------------------------
         # SKILL COUNTS
         # ----------------------------------------------------
 
-        hard_items = (
-            analysis.get(
-                "hard_skills",
-                []
-            )
-        )
-
-        soft_items = (
-            analysis.get(
-                "soft_skills",
-                []
-            )
-        )
-
+        hard_items = analysis.get("hard_skills", [])
+        soft_items = analysis.get("soft_skills", [])
 
         scan.skill_score = (
             analysis.get(
@@ -1910,63 +1804,37 @@ def rescan_scan(request, scan_id):
             )
         )
 
-
-        scan.required_skill_count = (
-            len(
-                hard_items
-            )
-        )
-
+        scan.required_skill_count = len(hard_items)
 
         scan.matched_required_skill_count = sum(
             1
             for item in hard_items
-            if item.get(
-                "status"
-            ) == "COVERED"
+            if item.get("status") == "COVERED"
         )
 
-
-        scan.preferred_skill_count = (
-            len(
-                soft_items
-            )
-        )
-
+        scan.preferred_skill_count = len(soft_items)
 
         scan.matched_preferred_skill_count = sum(
             1
             for item in soft_items
-            if item.get(
-                "status"
-            ) == "COVERED"
+            if item.get("status") == "COVERED"
         )
-
 
         # ----------------------------------------------------
         # SAVE COMPLETE ANALYSIS
         # ----------------------------------------------------
 
-        scan.analysis = (
-            analysis
-        )
-
-        scan.status = (
-            "completed"
-        )
-
+        scan.analysis = analysis
+        scan.status = "completed"
         scan.error_message = ""
-
 
         # ====================================================
         # SAVE EVERYTHING
         #
-        # This is the SAME scan record.
-        # No new CVScan.objects.create()
+        # Update the existing scan. Do not create a new record.
         # ====================================================
 
         scan.save()
-
 
         # ====================================================
         # SUCCESS
@@ -1974,15 +1842,14 @@ def rescan_scan(request, scan_id):
 
         messages.success(
             request,
-            "Your CV and job description were updated and rescanned successfully."
+            "Your CV and job description were updated and "
+            "rescanned successfully."
         )
-
 
         return redirect(
             "scan_result",
             scan_id=scan.id,
         )
-
 
     except Exception as exc:
 
@@ -1990,13 +1857,8 @@ def rescan_scan(request, scan_id):
         # ANALYSIS FAILED
         # ====================================================
 
-        scan.status = (
-            "failed"
-        )
-
-        scan.error_message = (
-            str(exc)
-        )
+        scan.status = "failed"
+        scan.error_message = str(exc)
 
         scan.save(
             update_fields=[
@@ -2006,12 +1868,10 @@ def rescan_scan(request, scan_id):
             ]
         )
 
-
         messages.error(
             request,
             f"Analysis failed: {exc}"
         )
-
 
         return redirect(
             "scan_result",
