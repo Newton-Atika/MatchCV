@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-+&+69v+qp*ew%dy-3j7nuvs%&-3s)+(+)*i)ntp%g=4*_vki_9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["match-cv-lemon.vercel.app","matchcv.org"]
+ALLOWED_HOSTS = ["match-cv-lemon.vercel.app","www.matchcv.org"]
 
 
 # Application definition
